@@ -1,1 +1,33 @@
+[==========] Running 13 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 13 tests from TestOpVec3
+[ RUN      ] TestOpVec3.TestConstruct
+[       OK ] TestOpVec3.TestConstruct
+[ RUN      ] TestOpVec3.TestIndex
+[       OK ] TestOpVec3.TestIndex
+[ RUN      ] TestOpVec3.TestEq
+[       OK ] TestOpVec3.TestEq
+[ RUN      ] TestOpVec3.TestDot
+[       OK ] TestOpVec3.TestDot
+[ RUN      ] TestOpVec3.TestSum
+[       OK ] TestOpVec3.TestSum
+[ RUN      ] TestOpVec3.TestDifference
+[       OK ] TestOpVec3.TestDifference
+[ RUN      ] TestOpVec3.TestNegate
+[       OK ] TestOpVec3.TestNegate
+[ RUN      ] TestOpVec3.TestScale
+[       OK ] TestOpVec3.TestScale
+[ RUN      ] TestOpVec3.TestDivide
+[       OK ] TestOpVec3.TestDivide
+[ RUN      ] TestOpVec3.TestLength
+[       OK ] TestOpVec3.TestLength
+[ RUN      ] TestOpVec3.TestNormalized
+[       OK ] TestOpVec3.TestNormalized
+[ RUN      ] TestOpVec3.TestMap
+[       OK ] TestOpVec3.TestMap
+[ RUN      ] TestOpVec3.TestOutput
 (1 2 3)
+[       OK ] TestOpVec3.TestOutput
+[----------] Global test environment tear-down
+[==========] 13 tests from 1 test case ran.
+[  PASSED  ] 13 tests.

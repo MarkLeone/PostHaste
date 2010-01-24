@@ -1,1 +1,11 @@
+[==========] Running 2 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 2 tests from TestIRVar
+[ RUN      ] TestIRVar.TestGlobalVar
 P
+[       OK ] TestIRVar.TestGlobalVar
+[ RUN      ] TestIRVar.TestGlobalCast
+[       OK ] TestIRVar.TestGlobalCast
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test case ran.
+[  PASSED  ] 2 tests.

@@ -1,3 +1,7 @@
+[==========] Running 2 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 2 tests from TestCgInst
+[ RUN      ] TestCgInst.TestGenInst
 
 entry:
   %0 = alloca float                               ; <float*> [#uses=2]
@@ -5,6 +9,8 @@ entry:
   %2 = load float* %0                             ; <float> [#uses=1]
   call void @OpNegate_f(float* %0, float %2)
 
+[       OK ] TestCgInst.TestGenInst
+[ RUN      ] TestCgInst.TestGenAssign
 
 entry:
   %0 = alloca float                               ; <float*> [#uses=1]
@@ -12,3 +18,7 @@ entry:
   %2 = load float* %1                             ; <float> [#uses=1]
   call void @OpAssign_ff(float* %0, float %2)
 
+[       OK ] TestCgInst.TestGenAssign
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test case ran.
+[  PASSED  ] 2 tests.

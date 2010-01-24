@@ -1,3 +1,7 @@
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from TestXfInstrument
+[ RUN      ] TestXfInstrument.TestOnShader
 ---------- TestLiveRudyCSkin.slo ----------
 surface TestLiveRudyCSkin(
     uniform vector Vf = assign(0);
@@ -179,3 +183,7 @@ surface TestLiveRudyCSkin(
     }
     Ci = assign(5_C);
 }
+[       OK ] TestXfInstrument.TestOnShader
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran.
+[  PASSED  ] 1 test.

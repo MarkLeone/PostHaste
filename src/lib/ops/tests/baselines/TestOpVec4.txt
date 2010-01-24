@@ -1,1 +1,27 @@
+[==========] Running 10 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 10 tests from TestOpVec4
+[ RUN      ] TestOpVec4.TestConstruct
+[       OK ] TestOpVec4.TestConstruct
+[ RUN      ] TestOpVec4.TestIndex
+[       OK ] TestOpVec4.TestIndex
+[ RUN      ] TestOpVec4.TestEq
+[       OK ] TestOpVec4.TestEq
+[ RUN      ] TestOpVec4.TestDot
+[       OK ] TestOpVec4.TestDot
+[ RUN      ] TestOpVec4.TestSum
+[       OK ] TestOpVec4.TestSum
+[ RUN      ] TestOpVec4.TestDifference
+[       OK ] TestOpVec4.TestDifference
+[ RUN      ] TestOpVec4.TestNegate
+[       OK ] TestOpVec4.TestNegate
+[ RUN      ] TestOpVec4.TestScale
+[       OK ] TestOpVec4.TestScale
+[ RUN      ] TestOpVec4.TestDivide
+[       OK ] TestOpVec4.TestDivide
+[ RUN      ] TestOpVec4.TestOutput
 (1 2 3 4)
+[       OK ] TestOpVec4.TestOutput
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test case ran.
+[  PASSED  ] 10 tests.

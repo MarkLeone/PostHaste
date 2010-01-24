@@ -1,0 +1,14 @@
+[==========] Running 4 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 4 tests from TestIRTypesFactory
+[ RUN      ] TestIRTypesFactory.TestBasicType
+[       OK ] TestIRTypesFactory.TestBasicType
+[ RUN      ] TestIRTypesFactory.TestBasicArrays
+[       OK ] TestIRTypesFactory.TestBasicArrays
+[ RUN      ] TestIRTypesFactory.TestNestedArrays
+[       OK ] TestIRTypesFactory.TestNestedArrays
+[ RUN      ] TestIRTypesFactory.TestStructs
+[       OK ] TestIRTypesFactory.TestStructs
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test case ran.
+[  PASSED  ] 4 tests.

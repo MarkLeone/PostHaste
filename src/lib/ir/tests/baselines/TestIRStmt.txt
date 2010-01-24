@@ -1,17 +1,31 @@
+[==========] Running 13 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 13 tests from TestIRStmt
+[ RUN      ] TestIRStmt.TestBlock
 x = negate(x);
+[       OK ] TestIRStmt.TestBlock
+[ RUN      ] TestIRStmt.TestIfStmt
 if (cond) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestIfStmt
+[ RUN      ] TestIRStmt.TestForStmtCondOnly
 for (; cond; ) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestForStmtCondOnly
+[ RUN      ] TestIRStmt.TestForStmtWithOneCondStmt
 for (; x = negate(x), cond; ) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestForStmtWithOneCondStmt
+[ RUN      ] TestIRStmt.TestForStmtWithTwoCondStmts
 for (; (x = negate(x), x = sin(x), cond); ) {
     x = negate(x);
     x = sin(x);
 }
+[       OK ] TestIRStmt.TestForStmtWithTwoCondStmts
+[ RUN      ] TestIRStmt.TestForStmtWithComplexCondStmt
 for (; {
            if (p) {
                x = negate(x);
@@ -21,6 +35,8 @@ for (; {
        }, cond; ) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestForStmtWithComplexCondStmt
+[ RUN      ] TestIRStmt.TestForStmtWithComplexIterStmt
 for (; cond; {
          if (p) {
              x = negate(x);
@@ -31,20 +47,32 @@ for (; cond; {
      ) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestForStmtWithComplexIterStmt
+[ RUN      ] TestIRStmt.TestForStmtWithOneIterStmt
 for (; cond; x = negate(x)) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestForStmtWithOneIterStmt
+[ RUN      ] TestIRStmt.TestForStmtWithTwoIterStmts
 for (; cond; x = negate(x), x = sin(x)) {
     x = negate(x);
     x = sin(x);
 }
+[       OK ] TestIRStmt.TestForStmtWithTwoIterStmts
+[ RUN      ] TestIRStmt.TestSeq
 x = negate(x);
+[       OK ] TestIRStmt.TestSeq
+[ RUN      ] TestIRStmt.TestIlluminanceStmt
 illuminance ("", P) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestIlluminanceStmt
+[ RUN      ] TestIRStmt.TestIlluminateStmt
 illuminate (P) {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestIlluminateStmt
+[ RUN      ] TestIRStmt.TestGatherStmt
 gather ("illuminance", P) {
     x = negate(x);
     x = sin(x);
@@ -52,3 +80,7 @@ gather ("illuminance", P) {
 else {
     x = negate(x);
 }
+[       OK ] TestIRStmt.TestGatherStmt
+[----------] Global test environment tear-down
+[==========] 13 tests from 1 test case ran.
+[  PASSED  ] 13 tests.

@@ -1,0 +1,26 @@
+[==========] Running 10 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 10 tests from TestUtHashMap
+[ RUN      ] TestUtHashMap.TestCStringHash
+[       OK ] TestUtHashMap.TestCStringHash
+[ RUN      ] TestUtHashMap.TestCStringEq
+[       OK ] TestUtHashMap.TestCStringEq
+[ RUN      ] TestUtHashMap.TestStdStringHash
+[       OK ] TestUtHashMap.TestStdStringHash
+[ RUN      ] TestUtHashMap.TestStdStringEq
+[       OK ] TestUtHashMap.TestStdStringEq
+[ RUN      ] TestUtHashMap.TestPtrHash
+[       OK ] TestUtHashMap.TestPtrHash
+[ RUN      ] TestUtHashMap.TestPtrEq
+[       OK ] TestUtHashMap.TestPtrEq
+[ RUN      ] TestUtHashMap.TestConstCStringMap
+[       OK ] TestUtHashMap.TestConstCStringMap
+[ RUN      ] TestUtHashMap.TestCStringMap
+[       OK ] TestUtHashMap.TestCStringMap
+[ RUN      ] TestUtHashMap.TestStdStringMap
+[       OK ] TestUtHashMap.TestStdStringMap
+[ RUN      ] TestUtHashMap.TestPtrMap
+[       OK ] TestUtHashMap.TestPtrMap
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test case ran.
+[  PASSED  ] 10 tests.

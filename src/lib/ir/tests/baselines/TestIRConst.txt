@@ -1,5 +1,25 @@
+[==========] Running 7 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 7 tests from TestIRConst
+[ RUN      ] TestIRConst.TestFloatConst
 1
+[       OK ] TestIRConst.TestFloatConst
+[ RUN      ] TestIRConst.TestStringConst
 "hello"
+[       OK ] TestIRConst.TestStringConst
+[ RUN      ] TestIRConst.TestTripleConst
 (1, 2, 3)
+[       OK ] TestIRConst.TestTripleConst
+[ RUN      ] TestIRConst.TestArrayConst
 {1, 2, 3}
+[       OK ] TestIRConst.TestArrayConst
+[ RUN      ] TestIRConst.TestStringArrayConst
 {"one", "two", "three"}
+[       OK ] TestIRConst.TestStringArrayConst
+[ RUN      ] TestIRConst.TestBasicCast
+[       OK ] TestIRConst.TestBasicCast
+[ RUN      ] TestIRConst.TestArrayCast
+[       OK ] TestIRConst.TestArrayCast
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test case ran.
+[  PASSED  ] 7 tests.

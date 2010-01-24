@@ -1,5 +1,21 @@
+[==========] Running 5 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 5 tests from TestIRPos
+[ RUN      ] TestIRPos.TestEmptyPos
 
+[       OK ] TestIRPos.TestEmptyPos
+[ RUN      ] TestIRPos.TestFileLine
 filename:7
+[       OK ] TestIRPos.TestFileLine
+[ RUN      ] TestIRPos.TestFileOnly
 filename
+[       OK ] TestIRPos.TestFileOnly
+[ RUN      ] TestIRPos.TestLineOnly
 7
+[       OK ] TestIRPos.TestLineOnly
+[ RUN      ] TestIRPos.TestEmptyFile
 7
+[       OK ] TestIRPos.TestEmptyFile
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test case ran.
+[  PASSED  ] 5 tests.

@@ -1,14 +1,26 @@
+[==========] Running 6 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 6 tests from TestCgShader
+[ RUN      ] TestCgShader.TestGenPrototype1
 TestGenPrototype1:
 void func(uniform float x1, point x2, float[3] x3, point P, uniform float param)
+[       OK ] TestCgShader.TestGenPrototype1
+[ RUN      ] TestCgShader.TestGenPrototype2
 TestGenPrototype2:
 void func(uniform float f, uniform point p, uniform matrix m, uniform string str, uniform float[3] fa, uniform point[3] pa, uniform string[3] sa)
+[       OK ] TestCgShader.TestGenPrototype2
+[ RUN      ] TestCgShader.TestGenKernelFunc
 TestGenKernelFunc:
 
 define void @func_kernel(float* noalias nocapture %_f, %struct.OpVec3* noalias nocapture %_p, %struct.OpMatrix4* noalias nocapture %_m, i8** noalias nocapture %_str, [3 x float]* noalias nocapture %_fa, [3 x %struct.OpVec3]* noalias nocapture %_pa, [3 x i8*]* noalias nocapture %_sa) {
 entry:
 }
+[       OK ] TestCgShader.TestGenKernelFunc
+[ RUN      ] TestCgShader.TestGenPluginCall
 TestGenPluginCall:
 TT_0 = func(f, p, m, str, fa, pa, sa);
+[       OK ] TestCgShader.TestGenPluginCall
+[ RUN      ] TestCgShader.TestCodegenPartition
 TestCodegenParition:
 TT_0 = TestCgShader1(a, b, Ci, Cs, Ps);
 
@@ -53,6 +65,8 @@ body:                                             ; preds = %test
 done:                                             ; preds = %test
   ret i32 0
 }
+[       OK ] TestCgShader.TestCodegenPartition
+[ RUN      ] TestCgShader.TestShaders
 ---------- TestCgShader1.slo ----------
 void TestCgShader1(uniform float a, float b, color Ci, color Cs, point Ps)
 {
@@ -943,3 +957,7 @@ body:                                             ; preds = %test
 done:                                             ; preds = %test
   ret i32 0
 }
+[       OK ] TestCgShader.TestShaders
+[----------] Global test environment tear-down
+[==========] 6 tests from 1 test case ran.
+[  PASSED  ] 6 tests.

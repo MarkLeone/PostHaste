@@ -1,9 +1,25 @@
+[==========] Running 5 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 5 tests from TestOpMatrix3
+[ RUN      ] TestOpMatrix3.TestConstruct
 ((1 0 0) (0 1 0) (0 0 1))
 ((1 1 1) (2 2 2) (3 3 3))
 ((1 1 1) (2 2 2) (3 3 3))
 ((1 1 1) (2 2 2) (3 3 3))
 ((1 2 3) (4 5 6) (7 8 9))
+[       OK ] TestOpMatrix3.TestConstruct
+[ RUN      ] TestOpMatrix3.TestIndexing
 ((1 1 1) (0 1 0) (0 3 1))
+[       OK ] TestOpMatrix3.TestIndexing
+[ RUN      ] TestOpMatrix3.TestTranspose
 ((1 4 7) (2 5 8) (3 6 9))
+[       OK ] TestOpMatrix3.TestTranspose
+[ RUN      ] TestOpMatrix3.TestMultiply
 ((1 2 3) (4 5 6) (7 8 9))
 ((1.2 1.5 1.8) (2.4 3 3.6) (-12 -15 -18))
+[       OK ] TestOpMatrix3.TestMultiply
+[ RUN      ] TestOpMatrix3.TestDeterminant
+[       OK ] TestOpMatrix3.TestDeterminant
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test case ran.
+[  PASSED  ] 5 tests.

@@ -1,5 +1,31 @@
+[==========] Running 12 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 12 tests from TestIRType
+[ RUN      ] TestIRType.TestFloatKind
+[       OK ] TestIRType.TestFloatKind
+[ RUN      ] TestIRType.TestPointKind
+[       OK ] TestIRType.TestPointKind
+[ RUN      ] TestIRType.TestArrayKind
+[       OK ] TestIRType.TestArrayKind
+[ RUN      ] TestIRType.TestStructKind
+[       OK ] TestIRType.TestStructKind
+[ RUN      ] TestIRType.TestBasicCast
+[       OK ] TestIRType.TestBasicCast
+[ RUN      ] TestIRType.TestArrayCast
+[       OK ] TestIRType.TestArrayCast
+[ RUN      ] TestIRType.TestStructCast
+[       OK ] TestIRType.TestStructCast
+[ RUN      ] TestIRType.TestArrayType
+[       OK ] TestIRType.TestArrayType
+[ RUN      ] TestIRType.TestStructType
+[       OK ] TestIRType.TestStructType
+[ RUN      ] TestIRType.TestFloatOutput
 float
+[       OK ] TestIRType.TestFloatOutput
+[ RUN      ] TestIRType.TestArrayOutput
 float[3]
+[       OK ] TestIRType.TestArrayOutput
+[ RUN      ] TestIRType.TestStructOutput
 t1
 struct t1 {
     uniform float x;
@@ -14,3 +40,7 @@ struct t3 {
     uniform t1 a;
     uniform t2[3] b;
 }
+[       OK ] TestIRType.TestStructOutput
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test case ran.
+[  PASSED  ] 12 tests.

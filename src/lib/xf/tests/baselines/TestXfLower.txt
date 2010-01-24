@@ -1,11 +1,41 @@
+[==========] Running 12 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 12 tests from TestXfLower
+[ RUN      ] TestXfLower.TestLowerFloatTy
+[       OK ] TestXfLower.TestLowerFloatTy
+[ RUN      ] TestXfLower.TestLowerArrayTy
+[       OK ] TestXfLower.TestLowerArrayTy
+[ RUN      ] TestXfLower.TestLowerFloatConst
 C1 4 2 -1 0 3 0 0 0 0 0 0
+[       OK ] TestXfLower.TestLowerFloatConst
+[ RUN      ] TestXfLower.TestLowerPointConst
 P1 2 2 -1 0 3 0 0 0 0 0 0
+[       OK ] TestXfLower.TestLowerPointConst
+[ RUN      ] TestXfLower.TestLowerStringConst
 S1 6 2 -1 0 3 0 0 0 0 0 0
+[       OK ] TestXfLower.TestLowerStringConst
+[ RUN      ] TestXfLower.TestRetainEmptyStringConst
+[       OK ] TestXfLower.TestRetainEmptyStringConst
+[ RUN      ] TestXfLower.TestNewEmptyStringConst
+[       OK ] TestXfLower.TestNewEmptyStringConst
+[ RUN      ] TestXfLower.TestLowerArrayConst
 A1 4 2 -1 0 3 0 0 0 0 0 0 3
+[       OK ] TestXfLower.TestLowerArrayConst
+[ RUN      ] TestXfLower.TestLowerStringArrayConst
 SA1 6 2 -1 0 3 0 0 0 0 0 0 3
+[       OK ] TestXfLower.TestLowerStringArrayConst
+[ RUN      ] TestXfLower.TestAnonConsts
 $C_0 4 2 -1 0 3 0 0 0 0 0 0
 $S_0 6 2 -1 0 3 0 0 0 0 0 0
 $C_1 4 2 -1 1 3 0 0 0 0 0 0 3
 $S_1 6 2 -1 1 3 0 0 0 0 0 0 3
+[       OK ] TestXfLower.TestAnonConsts
+[ RUN      ] TestXfLower.TestLowerGlobal
 P 2 10 -1 0 2 0 0 0 0 0 0
+[       OK ] TestXfLower.TestLowerGlobal
+[ RUN      ] TestXfLower.TestLowerParam
 v 2 13 -1 0 2 0 0 0 0 0 0
+[       OK ] TestXfLower.TestLowerParam
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test case ran.
+[  PASSED  ] 12 tests.

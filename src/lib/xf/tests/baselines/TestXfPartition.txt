@@ -1,3 +1,7 @@
+[==========] Running 4 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 4 tests from TestXfPartition
+[ RUN      ] TestXfPartition.TestPartitionBlock
 #line 3 "TestPartBlock.sl"
 2_x = add(f, 1);
 2_a = area(Ps);
@@ -6,6 +10,8 @@
 2_b = depth(Ps);
 2_n = calculatenormal(Ps);
 
+[       OK ] TestXfPartition.TestPartitionBlock
+[ RUN      ] TestXfPartition.TestPartitionSeq
 { // surface
     { // foo
         #line 4 "TestPartSeq.sl"
@@ -20,6 +26,8 @@
     } // bar
 } // surface
 
+[       OK ] TestXfPartition.TestPartitionSeq
+[ RUN      ] TestXfPartition.TestPartitionIf
 surface TestPartIf(
     varying float f = assign(0);
     )
@@ -53,6 +61,8 @@ Average partition length: 1.33
 Max partition length: 2
 Partition lengths: 1 1 2 
 
+[       OK ] TestXfPartition.TestPartitionIf
+[ RUN      ] TestXfPartition.TestAllNative
 surface TestPartNative(
     varying float f = assign(0);
     )
@@ -92,3 +102,7 @@ Average partition length: 10.00
 Max partition length: 10
 Partition lengths: 10 
 
+[       OK ] TestXfPartition.TestAllNative
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test case ran.
+[  PASSED  ] 4 tests.

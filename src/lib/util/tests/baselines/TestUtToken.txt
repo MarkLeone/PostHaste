@@ -1,4 +1,12 @@
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from TestUtToken
+[ RUN      ] TestUtToken.TestTokens
 foo
 foo
 foo
 foo
+[       OK ] TestUtToken.TestTokens
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran.
+[  PASSED  ] 1 test.

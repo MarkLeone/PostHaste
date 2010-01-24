@@ -1,9 +1,25 @@
+[==========] Running 7 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 7 tests from TestXfFreeVars
+[ RUN      ] TestXfFreeVars.TestAssign
 TestAssign: {x2, x3}
+[       OK ] TestXfFreeVars.TestAssign
+[ RUN      ] TestXfFreeVars.TestArrayAssign
 TestArrayAssign: {x1, x2, x3}
+[       OK ] TestXfFreeVars.TestArrayAssign
+[ RUN      ] TestXfFreeVars.TestArgKill
 TestArgKill: {x2, x3}
+[       OK ] TestXfFreeVars.TestArgKill
+[ RUN      ] TestXfFreeVars.TestAssignKill
 TestAssignKill: {x2}
+[       OK ] TestXfFreeVars.TestAssignKill
+[ RUN      ] TestXfFreeVars.TestBlock
 TestBlock: {x2}
+[       OK ] TestXfFreeVars.TestBlock
+[ RUN      ] TestXfFreeVars.TestSeq
 TestSeq: {x2}
+[       OK ] TestXfFreeVars.TestSeq
+[ RUN      ] TestXfFreeVars.TestShaders
 ---------- TestLive1.slo ----------
 Partition: FreeVars = {a, b, x}
 { // surface
@@ -499,3 +515,7 @@ Average partition length: 16.33
 Max partition length: 69
 Partition lengths: 1 3 21 3 69 1 
 
+[       OK ] TestXfFreeVars.TestShaders
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test case ran.
+[  PASSED  ] 7 tests.

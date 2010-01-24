@@ -1,0 +1,12 @@
+[==========] Running 3 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 3 tests from TestUtTimer
+[ RUN      ] TestUtTimer.TestGetFreq
+[       OK ] TestUtTimer.TestGetFreq
+[ RUN      ] TestUtTimer.TestGetTicks
+[       OK ] TestUtTimer.TestGetTicks
+[ RUN      ] TestUtTimer.TestTimer
+[       OK ] TestUtTimer.TestTimer
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test case ran.
+[  PASSED  ] 3 tests.

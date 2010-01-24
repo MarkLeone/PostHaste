@@ -1,10 +1,36 @@
+[==========] Running 10 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 10 tests from TestXfRaise
+[ RUN      ] TestXfRaise.TestStringConst
 "hello"
+[       OK ] TestXfRaise.TestStringConst
+[ RUN      ] TestXfRaise.TestFloatConst
 1
+[       OK ] TestXfRaise.TestFloatConst
+[ RUN      ] TestXfRaise.TestPointConst
 (1, 2, 3)
+[       OK ] TestXfRaise.TestPointConst
+[ RUN      ] TestXfRaise.TestMatrixConst
 (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+[       OK ] TestXfRaise.TestMatrixConst
+[ RUN      ] TestXfRaise.TestNumArray
 {1, 2, 3, 4}
+[       OK ] TestXfRaise.TestNumArray
+[ RUN      ] TestXfRaise.TestPointArray
 {(1, 1, 1), (2, 2, 2), (3, 3, 3)}
+[       OK ] TestXfRaise.TestPointArray
+[ RUN      ] TestXfRaise.TestStringArray
 {"one", "two", "three"}
+[       OK ] TestXfRaise.TestStringArray
+[ RUN      ] TestXfRaise.TestRaiseLocal
 uniform point x
+[       OK ] TestXfRaise.TestRaiseLocal
+[ RUN      ] TestXfRaise.TestRaiseGlobal
 varying point P
+[       OK ] TestXfRaise.TestRaiseGlobal
+[ RUN      ] TestXfRaise.TestRaiseParam
 varying float x
+[       OK ] TestXfRaise.TestRaiseParam
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test case ran.
+[  PASSED  ] 10 tests.

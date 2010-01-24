@@ -1,0 +1,10 @@
+[==========] Running 2 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 2 tests from TestSloRead
+[ RUN      ] TestSloRead.TestCopy
+[       OK ] TestSloRead.TestCopy
+[ RUN      ] TestSloRead.TestShaderCopy
+[       OK ] TestSloRead.TestShaderCopy
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test case ran.
+[  PASSED  ] 2 tests.

@@ -1,1 +1,16 @@
-dented.slo:83: Info: Read 83 lines
+[==========] Running 5 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 5 tests from TestSloFile
+[ RUN      ] TestSloFile.TestCtor
+[       OK ] TestSloFile.TestCtor
+[ RUN      ] TestSloFile.TestOpenRead
+[       OK ] TestSloFile.TestOpenRead
+[ RUN      ] TestSloFile.TestReadLines
+[       OK ] TestSloFile.TestReadLines
+[ RUN      ] TestSloFile.TestOpenWrite
+[       OK ] TestSloFile.TestOpenWrite
+[ RUN      ] TestSloFile.TestWrite
+[       OK ] TestSloFile.TestWrite
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test case ran.
+[  PASSED  ] 5 tests.

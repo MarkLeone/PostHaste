@@ -1,8 +1,24 @@
+[==========] Running 5 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 5 tests from TestUtVector
+[ RUN      ] TestUtVector.TestIndexing
 {1, 2, 3}
+[       OK ] TestUtVector.TestIndexing
+[ RUN      ] TestUtVector.TestDupCtor
 {1, 1, 1, 1}
+[       OK ] TestUtVector.TestDupCtor
+[ RUN      ] TestUtVector.TestRangeCtor
 {1, 2, 3, 4}
 {3, 4}
+[       OK ] TestUtVector.TestRangeCtor
+[ RUN      ] TestUtVector.TestCopyCtor
 {1, 2, 3, 4}
+[       OK ] TestUtVector.TestCopyCtor
+[ RUN      ] TestUtVector.TestVarArgsCtor
 {1}
 {1, 2, 3}
 1.1 2.2
+[       OK ] TestUtVector.TestVarArgsCtor
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test case ran.
+[  PASSED  ] 5 tests.

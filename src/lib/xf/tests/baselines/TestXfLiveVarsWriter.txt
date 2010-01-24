@@ -1,3 +1,7 @@
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from TestXfLiveVarsWriter
+[ RUN      ] TestXfLiveVarsWriter.TestWriteLiveVars
 ---------- areacam.slo ----------
 // Free: {Eref, Pref, space, use_Eref}
 {
@@ -302,3 +306,7 @@
     Oi = assign(Os);
     Ci = multiply(Ci, Oi);
 }
+[       OK ] TestXfLiveVarsWriter.TestWriteLiveVars
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran.
+[  PASSED  ] 1 test.

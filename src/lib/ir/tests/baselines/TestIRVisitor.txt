@@ -1,6 +1,14 @@
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from TestIRVisitor
+[ RUN      ] TestIRVisitor.TestWalker
 IRIfStmt
 IRBlock
 _negate
 IRBlock
 _negate
 sin
+[       OK ] TestIRVisitor.TestWalker
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran.
+[  PASSED  ] 1 test.

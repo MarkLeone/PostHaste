@@ -1,10 +1,30 @@
+[==========] Running 7 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 7 tests from TestOpMatrix4
+[ RUN      ] TestOpMatrix4.TestConstruct
 ((1 0 0 0) (0 1 0 0) (0 0 1 0) (0 0 0 1))
 ((1 1 1 1) (2 2 2 2) (3 3 3 3) (4 4 4 4))
 ((1 1 1 1) (2 2 2 2) (3 3 3 3) (4 4 4 4))
 ((1 1 1 1) (2 2 2 2) (3 3 3 3) (4 4 4 4))
 ((1 2 3 4) (5 6 7 8) (9 10 11 12) (13 14 15 16))
+[       OK ] TestOpMatrix4.TestConstruct
+[ RUN      ] TestOpMatrix4.TestIndexing
 ((1 1 1 1) (0 1 0 0) (0 0 1 0) (0 4 0 1))
+[       OK ] TestOpMatrix4.TestIndexing
+[ RUN      ] TestOpMatrix4.TestTranspose
 ((1 5 9 13) (2 6 10 14) (3 7 11 15) (4 8 12 16))
+[       OK ] TestOpMatrix4.TestTranspose
+[ RUN      ] TestOpMatrix4.TestMultiply
 ((1 2 3 4) (5 6 7 8) (9 10 11 12) (13 14 15 16))
 ((2.8 3.2 3.6 4) (5.6 6.4 7.2 8) (-28 -32 -36 -40) (-56 -64 -72 -80))
+[       OK ] TestOpMatrix4.TestMultiply
+[ RUN      ] TestOpMatrix4.TestInverse
 ((1 0 0 0) (0 1 0 0) (0 0 1 0) (0 0 0 1))
+[       OK ] TestOpMatrix4.TestInverse
+[ RUN      ] TestOpMatrix4.TestDeterminant
+[       OK ] TestOpMatrix4.TestDeterminant
+[ RUN      ] TestOpMatrix4.TestCast
+[       OK ] TestOpMatrix4.TestCast
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test case ran.
+[  PASSED  ] 7 tests.

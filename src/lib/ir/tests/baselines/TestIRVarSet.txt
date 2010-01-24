@@ -1,24 +1,68 @@
+[==========] Running 19 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 19 tests from TestIRVarSet
+[ RUN      ] TestIRVarSet.TestEmpty
 {}
+[       OK ] TestIRVarSet.TestEmpty
+[ RUN      ] TestIRVarSet.TestSingleton
 {x1}
+[       OK ] TestIRVarSet.TestSingleton
+[ RUN      ] TestIRVarSet.TestDupe
 {x1}
+[       OK ] TestIRVarSet.TestDupe
+[ RUN      ] TestIRVarSet.TestDouble
 {x1, x2}
+[       OK ] TestIRVarSet.TestDouble
+[ RUN      ] TestIRVarSet.TestRemove
 {x2}
 {}
+[       OK ] TestIRVarSet.TestRemove
+[ RUN      ] TestIRVarSet.TestUnion1
 {x1, x2}
 {x2}
+[       OK ] TestIRVarSet.TestUnion1
+[ RUN      ] TestIRVarSet.TestUnion2
 {x2}
 {x2}
+[       OK ] TestIRVarSet.TestUnion2
+[ RUN      ] TestIRVarSet.TestUnion3
 {x1}
 {}
+[       OK ] TestIRVarSet.TestUnion3
+[ RUN      ] TestIRVarSet.TestUnion4
 {}
 {}
+[       OK ] TestIRVarSet.TestUnion4
+[ RUN      ] TestIRVarSet.TestIntersect1
 {x1}
+[       OK ] TestIRVarSet.TestIntersect1
+[ RUN      ] TestIRVarSet.TestIntersect2
 {}
+[       OK ] TestIRVarSet.TestIntersect2
+[ RUN      ] TestIRVarSet.TestIntersect3
 {x1}
+[       OK ] TestIRVarSet.TestIntersect3
+[ RUN      ] TestIRVarSet.TestIntersect4
 {}
+[       OK ] TestIRVarSet.TestIntersect4
+[ RUN      ] TestIRVarSet.TestIntersect5
 {x1, x2}
+[       OK ] TestIRVarSet.TestIntersect5
+[ RUN      ] TestIRVarSet.TestIntersect6
 {x1, x2}
+[       OK ] TestIRVarSet.TestIntersect6
+[ RUN      ] TestIRVarSet.TestIntersect7
 {x1}
+[       OK ] TestIRVarSet.TestIntersect7
+[ RUN      ] TestIRVarSet.TestIntersect8
 {}
+[       OK ] TestIRVarSet.TestIntersect8
+[ RUN      ] TestIRVarSet.TestIntersect9
 {}
+[       OK ] TestIRVarSet.TestIntersect9
+[ RUN      ] TestIRVarSet.TestIntersect10
 {}
+[       OK ] TestIRVarSet.TestIntersect10
+[----------] Global test environment tear-down
+[==========] 19 tests from 1 test case ran.
+[  PASSED  ] 19 tests.

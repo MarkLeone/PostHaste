@@ -1,7 +1,27 @@
+[==========] Running 7 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 7 tests from TestCgConst
+[ RUN      ] TestCgConst.TestFloatConst
 float 1.000000e+00
+[       OK ] TestCgConst.TestFloatConst
+[ RUN      ] TestCgConst.TestTripleConst
 { [3 x float] } { [3 x float] [float 1.000000e+00, float 2.000000e+00, float 3.000000e+00] }
+[       OK ] TestCgConst.TestTripleConst
+[ RUN      ] TestCgConst.TestArrayConst
 [3 x float] [float 1.000000e+00, float 2.000000e+00, float 3.000000e+00]
+[       OK ] TestCgConst.TestArrayConst
+[ RUN      ] TestCgConst.TestTripleArrayConst
 [2 x { [3 x float] }] [{ [3 x float] } { [3 x float] [float 1.000000e+00, float 2.000000e+00, float 3.000000e+00] }, { [3 x float] } { [3 x float] [float 4.000000e+00, float 5.000000e+00, float 6.000000e+00] }]
+[       OK ] TestCgConst.TestTripleArrayConst
+[ RUN      ] TestCgConst.TestStringConst
 i8* getelementptr ([6 x i8]* @0, i32 0, i32 0)
+[       OK ] TestCgConst.TestStringConst
+[ RUN      ] TestCgConst.TestStringArrayConst
 [3 x i8*] [i8* getelementptr ([4 x i8]* @0, i32 0, i32 0), i8* getelementptr ([4 x i8]* @1, i32 0, i32 0), i8* getelementptr ([6 x i8]* @2, i32 0, i32 0)]
+[       OK ] TestCgConst.TestStringArrayConst
+[ RUN      ] TestCgConst.TestMatrixConst
 { [4 x { [4 x float] }] }
+[       OK ] TestCgConst.TestMatrixConst
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test case ran.
+[  PASSED  ] 7 tests.

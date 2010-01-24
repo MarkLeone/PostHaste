@@ -1,2 +1,18 @@
+[==========] Running 5 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 5 tests from TestUtDelete
+[ RUN      ] TestUtDelete.TestDeleteList
+[       OK ] TestUtDelete.TestDeleteList
+[ RUN      ] TestUtDelete.TestDeleteListRef
+[       OK ] TestUtDelete.TestDeleteListRef
+[ RUN      ] TestUtDelete.TestDeleteVec
+[       OK ] TestUtDelete.TestDeleteVec
+[ RUN      ] TestUtDelete.TestDeleteVecRef
+[       OK ] TestUtDelete.TestDeleteVecRef
+[ RUN      ] TestUtDelete.TestDeleteElement
 ~Element: 1
 ~Element: 2
+[       OK ] TestUtDelete.TestDeleteElement
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test case ran.
+[  PASSED  ] 5 tests.

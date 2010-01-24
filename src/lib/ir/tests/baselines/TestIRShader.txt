@@ -1,3 +1,7 @@
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from TestIRShader
+[ RUN      ] TestIRShader.TestShader
 surface foo(
     uniform float param;
     )
@@ -6,3 +10,7 @@ surface foo(
 
     x = negate(x);
 }
+[       OK ] TestIRShader.TestShader
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran.
+[  PASSED  ] 1 test.

@@ -1,9 +1,25 @@
+[==========] Running 7 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 7 tests from TestXfLiveVars
+[ RUN      ] TestXfLiveVars.TestAssign
 TestAssign: {x2, x3}
+[       OK ] TestXfLiveVars.TestAssign
+[ RUN      ] TestXfLiveVars.TestArrayAssign
 TestArrayAssign: {x1, x2, x3}
+[       OK ] TestXfLiveVars.TestArrayAssign
+[ RUN      ] TestXfLiveVars.TestArgKill
 TestArgKill: {x2, x3}
+[       OK ] TestXfLiveVars.TestArgKill
+[ RUN      ] TestXfLiveVars.TestAssignKill
 TestAssignKill: {x2}
+[       OK ] TestXfLiveVars.TestAssignKill
+[ RUN      ] TestXfLiveVars.TestBlock
 TestBlock: {x2}
+[       OK ] TestXfLiveVars.TestBlock
+[ RUN      ] TestXfLiveVars.TestSeq
 TestSeq: {x2}
+[       OK ] TestXfLiveVars.TestSeq
+[ RUN      ] TestXfLiveVars.TestShaders
 TestLive1.slo: {a, b}
 TestLive2.slo: {a, b, x, y}
 TestLive3.slo: {a, b}
@@ -24,3 +40,7 @@ TestLiveIllum3.slo: {Ci, Ps}
 TestLiveIllum4.slo: {a, Ci, Ps, x}
 TestLiveIllum5.slo: {a, Ci, Ps, x}
 TestLiveIllum6.slo: {a, Ci, Ps, x}
+[       OK ] TestXfLiveVars.TestShaders
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test case ran.
+[  PASSED  ] 7 tests.

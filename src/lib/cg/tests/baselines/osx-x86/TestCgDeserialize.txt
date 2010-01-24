@@ -1,0 +1,8 @@
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from TestCgDeserialize
+[ RUN      ] TestCgDeserialize.TestDeserializeShadeops
+[       OK ] TestCgDeserialize.TestDeserializeShadeops
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test case ran.
+[  PASSED  ] 1 test.
