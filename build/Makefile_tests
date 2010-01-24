@@ -13,7 +13,7 @@ TEST_OUTPUTS = $(patsubst %.cpp,$(OBJ_DIR)/%.txt,$(TEST_SRCS))
 LIBS := $(patsubst %,$(GEN_DIR)/lib/%,$(LIBS))
 
 CXXFLAGS += -Wno-unused-variable
-SYS_LIBS += libgtest.a 
+SYS_LIBS += -lgtest
 
 all: $(ALSO_MAKE) $(TEST_OUTPUTS:%=%.ok) 
 	@rm -f $(CLEANUP)
