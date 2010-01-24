@@ -56,6 +56,12 @@ http://llvm.org/docs/GettingStarted.html
 5. make
 6. sudo make install
 
+Next, install llvm-gcc.  It's easiest to use prebuilt binaries:
+
+- OSX: http://llvm.org/releases/2.6/llvm-gcc-4.2-2.6-i386-darwin9.tar.gz 
+- Linux x86: http://llvm.org/releases/2.6/llvm-gcc-4.2-2.6-i686-linux.tar.gz
+- Linux x64: http://llvm.org/releases/2.6/llvm-gcc-4.2-2.6-x86_64-linux.tar.gz
+
 Optionally, install the Google Test framework (for PostHaste unit tests):
 
 1. Download http://googletest.googlecode.com/files/gtest-1.3.0.tar.gz
