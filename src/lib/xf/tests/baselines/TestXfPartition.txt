@@ -1,0 +1,94 @@
+#line 3 "TestPartBlock.sl"
+2_x = add(f, 1);
+2_a = area(Ps);
+2_y = add(2_x, 2);
+2_z = add(2_y, 3);
+2_b = depth(Ps);
+2_n = calculatenormal(Ps);
+
+{ // surface
+    { // foo
+        #line 4 "TestPartSeq.sl"
+        3_x = add(f, 1);
+        3_a = area(Ps);
+    } // foo
+    { // bar
+        4_y = add(f, 2);
+        4_z = add(4_y, 3);
+        4_b = depth(Ps);
+        4_n = calculatenormal(Ps);
+    } // bar
+} // surface
+
+surface TestPartIf(
+    varying float f = assign(0);
+    )
+{
+    varying float 3_x;
+    varying float 3_a;
+    varying float 4_y;
+    varying float 4_z;
+    varying float 4_b;
+    varying normal 4_n;
+    varying bool T0;
+
+    #line 3 "TestPartIf.sl"
+    T0 = gt(f, 0);
+    if (T0) {
+        3_x = add(f, 1);
+        3_a = area(Ps);
+    }
+    else {
+        4_y = add(f, 2);
+        4_z = add(4_y, 3);
+        4_b = depth(Ps);
+        4_n = calculatenormal(Ps);
+    }
+}
+
+Shader: TestPartIf
+Instructions: 8
+Num compiled partitions: 3
+Average partition length: 1.33
+Max partition length: 2
+Partition lengths: 1 1 2 
+
+surface TestPartNative(
+    varying float f = assign(0);
+    )
+{
+    varying float 3_y;
+    varying float 4_x;
+    varying float 4_y;
+    varying float 5_y;
+    varying float 5_z;
+    varying bool T0;
+    varying bool T1;
+
+    #line 8 "TestPartNative.sl"
+    T0 = gt(f, 0);
+    if (T0) {
+        4_x = add(f, 1);
+        4_y = multiply(4_x, 1);
+    }
+    else {
+        5_y = add(f, 2);
+        5_z = divide(5_y, 3);
+        T1 = gt(5_z, 0);
+        if (T1) {
+            { // bar
+                #line 4 "TestPartNative.sl"
+                3_y = add(f, 2);
+                5_z = add(3_y, 3);
+            } // bar
+        }
+    }
+}
+
+Shader: TestPartNative
+Instructions: 10
+Num compiled partitions: 1
+Average partition length: 10.00
+Max partition length: 10
+Partition lengths: 10 
+

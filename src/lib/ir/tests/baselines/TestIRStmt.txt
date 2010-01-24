@@ -1,0 +1,54 @@
+x = negate(x);
+if (cond) {
+    x = negate(x);
+}
+for (; cond; ) {
+    x = negate(x);
+}
+for (; x = negate(x), cond; ) {
+    x = negate(x);
+}
+for (; (x = negate(x), x = sin(x), cond); ) {
+    x = negate(x);
+    x = sin(x);
+}
+for (; {
+           if (p) {
+               x = negate(x);
+           }
+           x = negate(x);
+           x = sin(x);
+       }, cond; ) {
+    x = negate(x);
+}
+for (; cond; {
+         if (p) {
+             x = negate(x);
+         }
+         x = negate(x);
+         x = sin(x);
+     }
+     ) {
+    x = negate(x);
+}
+for (; cond; x = negate(x)) {
+    x = negate(x);
+}
+for (; cond; x = negate(x), x = sin(x)) {
+    x = negate(x);
+    x = sin(x);
+}
+x = negate(x);
+illuminance ("", P) {
+    x = negate(x);
+}
+illuminate (P) {
+    x = negate(x);
+}
+gather ("illuminance", P) {
+    x = negate(x);
+    x = sin(x);
+}
+else {
+    x = negate(x);
+}

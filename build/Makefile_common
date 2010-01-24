@@ -1,0 +1,64 @@
+# Makefiles including this must define TOP_DIR to be parent of src directory.
+
+CONFIG ?= debug
+ifneq (,$(findstring darwin,$(OSTYPE)))
+    ARCH ?= osx-x86
+    DOT_EXE =
+    DOT_SO = .so
+endif
+ifneq (,$(findstring linux,$(OSTYPE)))
+    ARCH ?= linux-x64
+    DOT_EXE =
+    DOT_SO = .so
+endif
+ifeq ($(OSTYPE), cygwin)
+    ARCH ?= windows-x64
+    DOT_EXE =
+    DOT_SO = .so
+endif
+
+SRC_DIR = $(TOP_DIR)/src
+GEN_DIR = $(TOP_DIR)/gen/$(ARCH)/$(CONFIG)
+INST_DIR = $(TOP_DIR)/inst/$(ARCH)/$(CONFIG)
+EXT_DIR = $(TOP_DIR)/ext/inst/$(ARCH)/$(CONFIG)
+TOOLS_DIR = $(TOP_DIR)/tools
+
+# Debug/optimize
+ifeq ($(CONFIG), debug)
+    CXXFLAGS += -g
+else
+    CXXFLAGS += -g3 -O2 -DNDEBUG -Werror
+endif
+
+# Dependencies (exclude system headers)
+CXXFLAGS += -MMD -MP
+
+# Warnings
+CXXFLAGS += \
+    -W \
+    -Wall \
+    -Wextra \
+    -Wconversion \
+    -Wno-deprecated \
+    -Wno-parentheses \
+    -Wno-unused-parameter \
+    $(NULL)
+
+# Defines
+CXXFLAGS += \
+   -D__STDC_LIMIT_MACROS \
+   -D__STDC_CONSTANT_MACROS \
+    $(NULL)
+
+# Includes
+CXXFLAGS += -I$(TOP_DIR)/src/lib -I$(TOP_DIR)/src/include
+
+# System libraries
+SYS_LIBS =
+ifeq ($(ARCH), linux-x64)
+     # librt is for clock_gettime
+     SYS_LIBS += -lrt -ldl
+endif
+
+# LLVM libraries
+LLVM_LIBS = -lLLVMLinker -lLLVMipo -lLLVMipa -lLLVMTarget -lLLVMScalarOpts -lLLVMTransformUtils -lLLVMAnalysis -lLLVMBitReader -lLLVMBitWriter -lLLVMCore -lLLVMSupport -lLLVMSystem

@@ -1,0 +1,2 @@
+Info: Test: hello, world!
+test.txt:7: Warning: Test: 42

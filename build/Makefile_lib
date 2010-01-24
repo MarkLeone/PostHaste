@@ -1,0 +1,30 @@
+# Makefiles that include must also include Makefile.common and must define
+# SRCS, SRC_DIR, and LIB_NAME.  Optionally, ALSO_MAKE can be an extra
+# target, and ALSO_LINK can be additional object files.
+
+OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
+OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRCS)) $(ALSO_LINK)
+LIB_FILE = $(GEN_DIR)/lib/$(LIB_NAME)
+
+all: $(LIB_FILE) $(ALSO_MAKE)
+
+tests: $(LIB_FILE) $(ALSO_MAKE)
+	$(MAKE) -C tests
+
+.PHONY: objects
+objects: $(OBJECTS) $(ALSO_MAKE)
+
+$(LIB_FILE): $(OBJECTS)
+	@mkdir -p $(dir $@)
+	$(AR) ru $@ $(OBJECTS)
+
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+clean:
+	rm -rf $(OBJ_DIR)
+	$(MAKE) clean -C tests
+
+-include $(OBJECTS:%.o=%.d)
+

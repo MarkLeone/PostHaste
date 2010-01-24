@@ -1,0 +1,1033 @@
+TestGenPrototype1:
+void func(uniform float x1, point x2, float[3] x3, point P, uniform float param)
+TestGenPrototype2:
+void func(uniform float f, uniform point p, uniform matrix m, uniform string str, uniform float[3] fa, uniform point[3] pa, uniform string[3] sa)
+TestGenKernelFunc:
+
+define void @func_kernel(float* noalias nocapture %_f, %struct.OpVec3* noalias nocapture %_p, %struct.OpMatrix4* noalias nocapture %_m, i8** noalias nocapture %_str, [3 x float]* noalias nocapture %_fa, [3 x %struct.OpVec3]* noalias nocapture %_pa, [3 x i8*]* noalias nocapture %_sa) {
+entry:
+}
+TestGenPluginCall:
+TT_0 = func(f, p, m, str, fa, pa, sa);
+TestCodegenParition:
+TT_0 = TestCgShader1(a, b, Ci, Cs, Ps);
+
+define i32 @TestCgShader1(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_Ps_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_Cs_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_Ci_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_b_iter = alloca %struct.CgIter                ; <%struct.CgIter*> [#uses=3]
+  %_a_iter = alloca %struct.CgIter                ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_a_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 2, %struct.CgIter* %_b_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 3, %struct.CgIter* %_Ci_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 4, %struct.CgIter* %_Cs_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 5, %struct.CgIter* %_Ps_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %7, %body ]   ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_a_iter) ; <float*> [#uses=1]
+  %3 = call float* @CgDerefIter(%struct.CgIter* %_b_iter) ; <float*> [#uses=1]
+  %4 = call float* @CgDerefIter(%struct.CgIter* %_Ci_iter) ; <float*> [#uses=1]
+  %_Ci_ptr = bitcast float* %4 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %5 = call float* @CgDerefIter(%struct.CgIter* %_Cs_iter) ; <float*> [#uses=1]
+  %_Cs_ptr = bitcast float* %5 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %6 = call float* @CgDerefIter(%struct.CgIter* %_Ps_iter) ; <float*> [#uses=1]
+  %_Ps_ptr = bitcast float* %6 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  call void @TestCgShader1_kernel(float* %2, float* %3, %struct.OpVec3* %_Ci_ptr, %struct.OpVec3* %_Cs_ptr, %struct.OpVec3* %_Ps_ptr)
+  call void @CgIncIter(%struct.CgIter* %_a_iter)
+  call void @CgIncIter(%struct.CgIter* %_b_iter)
+  call void @CgIncIter(%struct.CgIter* %_Ci_iter)
+  call void @CgIncIter(%struct.CgIter* %_Cs_iter)
+  call void @CgIncIter(%struct.CgIter* %_Ps_iter)
+  %7 = add i32 %index, 1                          ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+---------- TestCgShader1.slo ----------
+void TestCgShader1(uniform float a, float b, color Ci, color Cs, point Ps)
+{
+    #line 3 "TestCgShader1.sl"
+    b = add(b, a);
+    print(a);
+    print(b);
+    print(Ps);
+    Ci = assign(Cs);
+    b = add(a, 1);
+    2_f = comp(Ps, 0);
+    print(2_f);
+}
+
+surface TestCgShader1(
+    uniform float a = assign(1);
+    output varying float b = assign(0);
+    )
+{
+    varying float 2_f;
+    varying float TT_0;
+
+    TT_0 = TestCgShader1(a, b, Ci, Cs, Ps);
+}
+@.str = private constant [37 x i8] c"i < 3 && \22Vector index out of range\22\00", align 1 ; <[37 x i8]*> [#uses=1]
+@.str1 = private constant [16 x i8] c"../ops/OpVec3.h\00", align 1 ; <[16 x i8]*> [#uses=1]
+@.str14 = private constant [29 x i8] c"1 value:\0A  0:%.6f %.6f %.6f\0A\00", align 1 ; <[29 x i8]*> [#uses=1]
+@.str16 = private constant [19 x i8] c"1 value:\0A  0:%.6f\0A\00", align 1 ; <[19 x i8]*> [#uses=1]
+@RslPublicFunctions = global %struct.RslFunctionTable { %struct.RslFunction* getelementptr ([2 x %struct.RslFunction]* @gCgRslFunctions, i32 0, i32 0), i8 4, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, align 32 ; <%struct.RslFunctionTable*> [#uses=0]
+@llvm.global_ctors = appending global [0 x %0] zeroinitializer ; <[0 x %0]*> [#uses=0]
+@gCgRslFunctions = constant [2 x %struct.RslFunction] [%struct.RslFunction { i8* getelementptr ([75 x i8]* @0, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @TestCgShader1, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction zeroinitializer] ; <[2 x %struct.RslFunction]*> [#uses=1]
+
+declare void @__assert_fail(i8*, i8*, i32, i8*) noreturn nounwind
+
+declare i32 @printf(i8* noalias nocapture, ...) nounwind
+
+declare void @llvm.memcpy.i64(i8* nocapture, i8* nocapture, i64, i32) nounwind
+
+define i32 @CgEntryFunc(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  ret i32 0
+}
+
+declare extern_weak i32 @pthread_once(i32*, void ()*)
+
+declare extern_weak i8* @pthread_getspecific(i32)
+
+declare extern_weak i32 @pthread_setspecific(i32, i8*)
+
+declare extern_weak i32 @pthread_create(i64*, %struct.pthread_attr_t*, i8* (i8*)*, i8*)
+
+declare extern_weak i32 @pthread_cancel(i64)
+
+declare extern_weak i32 @pthread_mutex_lock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_trylock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_unlock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_init(%struct.pthread_mutex_t*, %struct.pthread_mutexattr_t*)
+
+declare extern_weak i32 @pthread_key_create(i32*, void (i8*)*)
+
+declare extern_weak i32 @pthread_key_delete(i32)
+
+declare extern_weak i32 @pthread_mutexattr_init(%struct.pthread_mutexattr_t*)
+
+declare extern_weak i32 @pthread_mutexattr_settype(%struct.pthread_mutexattr_t*, i32)
+
+declare extern_weak i32 @pthread_mutexattr_destroy(%struct.pthread_mutexattr_t*)
+
+define void @TestCgShader1_kernel(float* noalias nocapture %_a, float* noalias nocapture %_b, %struct.OpVec3* noalias nocapture %_Ci, %struct.OpVec3* noalias nocapture %_Cs, %struct.OpVec3* noalias nocapture %_Ps) {
+entry:
+  %_2_f = alloca float                            ; <float*> [#uses=2]
+  %0 = load float* %_b                            ; <float> [#uses=1]
+  %1 = load float* %_a                            ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_b, float %0, float %1)
+  %2 = load float* %_a                            ; <float> [#uses=1]
+  call void @OpPrint_f(float %2)
+  %3 = load float* %_b                            ; <float> [#uses=1]
+  call void @OpPrint_f(float %3)
+  call void @OpPrint_t(%struct.OpVec3* %_Ps)
+  call void @OpAssign_tt(%struct.OpVec3* %_Ci, %struct.OpVec3* %_Cs)
+  %4 = load float* %_a                            ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_b, float %4, float 1.000000e+00)
+  call void @OpComp(float* %_2_f, %struct.OpVec3* %_Ps, float 0.000000e+00)
+  %5 = load float* %_2_f                          ; <float> [#uses=1]
+  call void @OpPrint_f(float %5)
+  ret void
+}
+
+define i32 @TestCgShader1(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_Ps_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_Cs_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_Ci_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_b_iter = alloca %struct.CgIter                ; <%struct.CgIter*> [#uses=3]
+  %_a_iter = alloca %struct.CgIter                ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_a_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 2, %struct.CgIter* %_b_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 3, %struct.CgIter* %_Ci_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 4, %struct.CgIter* %_Cs_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 5, %struct.CgIter* %_Ps_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %7, %body ]   ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_a_iter) ; <float*> [#uses=1]
+  %3 = call float* @CgDerefIter(%struct.CgIter* %_b_iter) ; <float*> [#uses=1]
+  %4 = call float* @CgDerefIter(%struct.CgIter* %_Ci_iter) ; <float*> [#uses=1]
+  %_Ci_ptr = bitcast float* %4 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %5 = call float* @CgDerefIter(%struct.CgIter* %_Cs_iter) ; <float*> [#uses=1]
+  %_Cs_ptr = bitcast float* %5 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %6 = call float* @CgDerefIter(%struct.CgIter* %_Ps_iter) ; <float*> [#uses=1]
+  %_Ps_ptr = bitcast float* %6 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  call void @TestCgShader1_kernel(float* %2, float* %3, %struct.OpVec3* %_Ci_ptr, %struct.OpVec3* %_Cs_ptr, %struct.OpVec3* %_Ps_ptr)
+  call void @CgIncIter(%struct.CgIter* %_a_iter)
+  call void @CgIncIter(%struct.CgIter* %_b_iter)
+  call void @CgIncIter(%struct.CgIter* %_Ci_iter)
+  call void @CgIncIter(%struct.CgIter* %_Cs_iter)
+  call void @CgIncIter(%struct.CgIter* %_Ps_iter)
+  %7 = add i32 %index, 1                          ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+---------- TestCgShader2.slo ----------
+void TestCgShader2(uniform float f)
+{
+    #line 11 "TestCgShader2.sl"
+    2_x = add(f, 1);
+}
+
+surface TestCgShader2(
+    uniform float f = assign(0);
+    uniform point p = assign(0);
+    uniform matrix m = assignmatrix(0);
+    uniform string str = assign("hello");
+    uniform float[3] fa;
+    uniform point[3] pa;
+    uniform string[3] sa = (arrayassign(sa, 0, ""), arrayassign(sa, 1, ""), arrayassign(sa, 2, ""), sa);
+    )
+{
+    varying float 2_x;
+    uniform float TT_0;
+
+    TT_0 = TestCgShader2(f);
+}
+@RslPublicFunctions = global %struct.RslFunctionTable { %struct.RslFunction* getelementptr ([2 x %struct.RslFunction]* @gCgRslFunctions, i32 0, i32 0), i8 4, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, align 32 ; <%struct.RslFunctionTable*> [#uses=0]
+@llvm.global_ctors = appending global [0 x %0] zeroinitializer ; <[0 x %0]*> [#uses=0]
+@gCgRslFunctions = constant [2 x %struct.RslFunction] [%struct.RslFunction { i8* getelementptr ([36 x i8]* @0, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @TestCgShader2, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction zeroinitializer] ; <[2 x %struct.RslFunction]*> [#uses=1]
+
+declare void @llvm.memcpy.i64(i8* nocapture, i8* nocapture, i64, i32) nounwind
+
+define i32 @CgEntryFunc(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  ret i32 0
+}
+
+declare extern_weak i32 @pthread_once(i32*, void ()*)
+
+declare extern_weak i8* @pthread_getspecific(i32)
+
+declare extern_weak i32 @pthread_setspecific(i32, i8*)
+
+declare extern_weak i32 @pthread_create(i64*, %struct.pthread_attr_t*, i8* (i8*)*, i8*)
+
+declare extern_weak i32 @pthread_cancel(i64)
+
+declare extern_weak i32 @pthread_mutex_lock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_trylock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_unlock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_init(%struct.pthread_mutex_t*, %struct.pthread_mutexattr_t*)
+
+declare extern_weak i32 @pthread_key_create(i32*, void (i8*)*)
+
+declare extern_weak i32 @pthread_key_delete(i32)
+
+declare extern_weak i32 @pthread_mutexattr_init(%struct.pthread_mutexattr_t*)
+
+declare extern_weak i32 @pthread_mutexattr_settype(%struct.pthread_mutexattr_t*, i32)
+
+declare extern_weak i32 @pthread_mutexattr_destroy(%struct.pthread_mutexattr_t*)
+
+define void @TestCgShader2_kernel(float* noalias nocapture %_f) {
+entry:
+  %_2_x = alloca float                            ; <float*> [#uses=1]
+  %0 = load float* %_f                            ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_2_x, float %0, float 1.000000e+00)
+  ret void
+}
+
+define i32 @TestCgShader2(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_f_iter = alloca %struct.CgIter                ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_f_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %3, %body ]   ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_f_iter) ; <float*> [#uses=1]
+  call void @TestCgShader2_kernel(float* %2)
+  call void @CgIncIter(%struct.CgIter* %_f_iter)
+  %3 = add i32 %index, 1                          ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+---------- TestRudyCSkin.slo ----------
+void TestRudyCSkin(color 5_C)
+{
+    #line 38 "TestRudyCSkin.sl"
+    5_C = assign(0);
+}
+
+void efresnel(vector 3_T, float 5_Kr, float 5_Kt, vector 5_T)
+{
+    #line 26 "TestRudyCSkin.sl"
+    5_Kr = smoothstep(0, 0.5, 5_Kr);
+    5_Kt = subtract(1, 5_Kr);
+    5_T = normalize(3_T);
+}
+
+void TestRudyCSkin15(color 5_C, float 5_Kr, vector 6_Ln, color Cl, vector L, uniform normal Nn, uniform color sheenColor, vector T18, uniform vector Vf)
+{
+    #line 43 "TestRudyCSkin.sl"
+    6_Ln = normalize(L);
+    T3 = add(6_Ln, Vf);
+    6_H = normalize(T3);
+    T4 = dot(6_H, Nn);
+    T5 = gt(T4, 0);
+    if (T5) {
+        T6 = scale(5_Kr, sheenColor);
+        T7 = multiply(T6, Cl);
+        T4 = dot(6_Ln, Nn);
+        T6 = scale(T4, T7);
+        T4 = dot(6_H, Nn);
+        T10 = pow(T4, 4);
+        T7 = scale(T10, T6);
+        5_C = add(5_C, T7);
+    }
+    T6 = scale(5_Kr, sheenColor);
+    T7 = multiply(T6, Cl);
+    T4 = dot(6_Ln, Nn);
+    T6 = scale(T4, T7);
+    T7 = scale(0.2, T6);
+    5_C = add(5_C, T7);
+    T18 = negate(6_Ln);
+}
+
+void efresnel16(vector 3_T, float 5_Kr2, float 5_Kt2, vector 6_T2)
+{
+    #line 26 "TestRudyCSkin.sl"
+    5_Kr2 = smoothstep(0, 0.5, 5_Kr2);
+    5_Kt2 = subtract(1, 5_Kr2);
+    6_T2 = normalize(3_T);
+}
+
+void TestRudyCSkin17(color 5_C, float 5_Kt, float 5_Kt2, vector 5_T, vector 6_Ln, vector 6_T2, color Cl, uniform normal Nn, uniform color skinColor, uniform float thickness)
+{
+    #line 51 "TestRudyCSkin.sl"
+    T6 = multiply(skinColor, Cl);
+    T4 = dot(6_Ln, Nn);
+    T7 = scale(T4, T6);
+    T6 = scale(5_Kt, T7);
+    T7 = scale(5_Kt2, T6);
+    { // singleScatter
+        #line 16 "TestRudyCSkin.sl"
+        T4 = dot(5_T, Nn);
+        2_win = abs(T4);
+        T4 = dot(6_T2, Nn);
+        2_won = abs(T4);
+        { // phase
+            #line 11 "TestRudyCSkin.sl"
+            T3 = negate(6_T2);
+            1_costheta = dot(T3, 5_T);
+            T4 = multiply(1.6, 1_costheta);
+            T10 = subtract(1.64, T4);
+            T4 = pow(T10, 1.5);
+            T10 = divide(0.36, T4);
+        } // phase
+        #line 19 "TestRudyCSkin.sl"
+        T4 = add(2_win, 2_won);
+        T38 = divide(T10, T4);
+        T4 = multiply(0.8, T38);
+        T10 = divide(1, 2_win);
+        T38 = divide(1, 2_won);
+        T43 = add(T10, T38);
+        T10 = negate(T43);
+        T38 = multiply(T10, thickness);
+        T10 = exp(T38);
+        T38 = subtract(1, T10);
+        T10 = multiply(T4, T38);
+    } // singleScatter
+    { // singleScatter
+        #line 16 "TestRudyCSkin.sl"
+        T4 = dot(5_T, Nn);
+        2_win = abs(T4);
+        T4 = dot(6_T2, Nn);
+        2_won = abs(T4);
+        { // phase
+            #line 11 "TestRudyCSkin.sl"
+            T3 = negate(6_T2);
+            1_costheta = dot(T3, 5_T);
+            T4 = multiply(0.6, 1_costheta);
+            T38 = subtract(1.09, T4);
+            T4 = pow(T38, 1.5);
+            T38 = divide(0.91, T4);
+        } // phase
+        #line 19 "TestRudyCSkin.sl"
+        T4 = add(2_win, 2_won);
+        T43 = divide(T38, T4);
+        T4 = multiply(0.5, T43);
+        T38 = divide(1, 2_win);
+        T43 = divide(1, 2_won);
+        T66 = add(T38, T43);
+        T38 = negate(T66);
+        T43 = multiply(T38, thickness);
+        T38 = exp(T43);
+        T43 = subtract(1, T38);
+        T38 = multiply(T4, T43);
+    } // singleScatter
+    #line 53 "TestRudyCSkin.sl"
+    T4 = add(T10, T38);
+    { // singleScatter
+        #line 16 "TestRudyCSkin.sl"
+        T10 = dot(5_T, Nn);
+        2_win = abs(T10);
+        T10 = dot(6_T2, Nn);
+        2_won = abs(T10);
+        { // phase
+            #line 11 "TestRudyCSkin.sl"
+            T3 = negate(6_T2);
+            1_costheta = dot(T3, 5_T);
+            T10 = assign(1);
+        } // phase
+        #line 19 "TestRudyCSkin.sl"
+        T38 = add(2_win, 2_won);
+        T43 = divide(T10, T38);
+        T10 = multiply(0.4, T43);
+        T38 = divide(1, 2_win);
+        T43 = divide(1, 2_won);
+        T66 = add(T38, T43);
+        T38 = negate(T66);
+        T43 = multiply(T38, thickness);
+        T38 = exp(T43);
+        T43 = subtract(1, T38);
+        T38 = multiply(T10, T43);
+    } // singleScatter
+    #line 54 "TestRudyCSkin.sl"
+    T10 = add(T4, T38);
+    T6 = scale(T10, T7);
+    5_C = add(5_C, T6);
+}
+
+void TestRudyCSkin18(color 5_C, color Ci)
+{
+    #line 56 "TestRudyCSkin.sl"
+    Ci = assign(5_C);
+}
+
+surface TestRudyCSkin(
+    uniform vector Vf = assign(0);
+    uniform normal Nn = assign(0);
+    uniform color skinColor = assign(0);
+    uniform color sheenColor = assign(0);
+    uniform float eta = assign(0);
+    uniform float thickness = assign(0);
+    )
+{
+    varying float 1_costheta;
+    varying float 2_win;
+    varying float 2_won;
+    varying vector 3_R;
+    varying vector 3_T;
+    varying float 5_Kr;
+    varying float 5_Kt;
+    varying float 5_Kr2;
+    varying float 5_Kt2;
+    varying color 5_C;
+    varying vector 5_T;
+    varying vector 6_Ln;
+    varying vector 6_H;
+    varying vector 6_T2;
+    uniform vector T0;
+    varying bool T1;
+    varying vector T3;
+    varying float T4;
+    varying bool T5;
+    varying color T6;
+    varying color T7;
+    varying float T10;
+    varying vector T18;
+    varying float T38;
+    varying float T43;
+    varying float T66;
+    varying float TT_0;
+    varying float TT_1;
+    varying float TT_2;
+    varying float TT_3;
+    varying float TT_4;
+    varying float TT_5;
+
+    TT_0 = TestRudyCSkin(5_C);
+    #line 40 "TestRudyCSkin.sl"
+    T0 = negate(Vf);
+    { // efresnel
+        #line 25 "TestRudyCSkin.sl"
+        fresnel(T0, Nn, eta, 5_Kr, 5_Kt, 3_R, 3_T);
+        TT_1 = efresnel(3_T, 5_Kr, 5_Kt, 5_T);
+    } // efresnel
+    #line 42 "TestRudyCSkin.sl"
+    lightingstart(Vf, Nn, skinColor, sheenColor, eta, thickness, 3_R, 3_T, 5_Kr, 5_Kt, 5_C, 5_T);
+    illuminance (Ps, Nn, 1.5708) {
+        TT_2 = TestRudyCSkin15(5_C, 5_Kr, 6_Ln, Cl, L, Nn, sheenColor, T18, Vf);
+        { // efresnel
+            #line 25 "TestRudyCSkin.sl"
+            fresnel(T18, Nn, eta, 5_Kr2, 5_Kt2, 3_R, 3_T);
+            TT_3 = efresnel16(3_T, 5_Kr2, 5_Kt2, 6_T2);
+        } // efresnel
+        TT_4 = TestRudyCSkin17(5_C, 5_Kt, 5_Kt2, 5_T, 6_Ln, 6_T2, Cl, Nn, skinColor, thickness);
+    }
+    TT_5 = TestRudyCSkin18(5_C, Ci);
+}
+@RslPublicFunctions = global %struct.RslFunctionTable { %struct.RslFunction* getelementptr ([7 x %struct.RslFunction]* @gCgRslFunctions, i32 0, i32 0), i8 4, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, align 32 ; <%struct.RslFunctionTable*> [#uses=0]
+@llvm.global_ctors = appending global [0 x %0] zeroinitializer ; <[0 x %0]*> [#uses=0]
+@gCgRslFunctions = constant [7 x %struct.RslFunction] [%struct.RslFunction { i8* getelementptr ([30 x i8]* @0, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @TestRudyCSkin, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction { i8* getelementptr ([62 x i8]* @1, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @efresnel, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction { i8* getelementptr ([153 x i8]* @2, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @TestRudyCSkin15, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction { i8* getelementptr ([67 x i8]* @3, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @efresnel16, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction { i8* getelementptr ([174 x i8]* @4, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @TestRudyCSkin17, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction { i8* getelementptr ([42 x i8]* @5, i32 0, i32 0), i32 (%struct.RslArg_v3*, i32, %struct.RslArg**)* @TestRudyCSkin18, void (%struct.RixContext*)* null, void (%struct.RixContext*)* null }, %struct.RslFunction zeroinitializer] ; <[7 x %struct.RslFunction]*> [#uses=1]
+
+declare float @fabsf(float)
+
+declare float @llvm.sqrt.f32(float) nounwind readonly
+
+declare float @llvm.pow.f32(float, float) nounwind readonly
+
+declare float @llvm.exp.f32(float) nounwind readonly
+
+declare void @llvm.memcpy.i64(i8* nocapture, i8* nocapture, i64, i32) nounwind
+
+define i32 @CgEntryFunc(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  ret i32 0
+}
+
+declare extern_weak i32 @pthread_once(i32*, void ()*)
+
+declare extern_weak i8* @pthread_getspecific(i32)
+
+declare extern_weak i32 @pthread_setspecific(i32, i8*)
+
+declare extern_weak i32 @pthread_create(i64*, %struct.pthread_attr_t*, i8* (i8*)*, i8*)
+
+declare extern_weak i32 @pthread_cancel(i64)
+
+declare extern_weak i32 @pthread_mutex_lock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_trylock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_unlock(%struct.pthread_mutex_t*)
+
+declare extern_weak i32 @pthread_mutex_init(%struct.pthread_mutex_t*, %struct.pthread_mutexattr_t*)
+
+declare extern_weak i32 @pthread_key_create(i32*, void (i8*)*)
+
+declare extern_weak i32 @pthread_key_delete(i32)
+
+declare extern_weak i32 @pthread_mutexattr_init(%struct.pthread_mutexattr_t*)
+
+declare extern_weak i32 @pthread_mutexattr_settype(%struct.pthread_mutexattr_t*, i32)
+
+declare extern_weak i32 @pthread_mutexattr_destroy(%struct.pthread_mutexattr_t*)
+
+define void @TestRudyCSkin_kernel(%struct.OpVec3* noalias nocapture %_5_C) {
+entry:
+  call void @OpAssign_tf(%struct.OpVec3* %_5_C, float 0.000000e+00)
+  ret void
+}
+
+define i32 @TestRudyCSkin(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_5_C_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_5_C_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %3, %body ]   ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_5_C_iter) ; <float*> [#uses=1]
+  %_5_C_ptr = bitcast float* %2 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  call void @TestRudyCSkin_kernel(%struct.OpVec3* %_5_C_ptr)
+  call void @CgIncIter(%struct.CgIter* %_5_C_iter)
+  %3 = add i32 %index, 1                          ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+
+define void @efresnel_kernel(%struct.OpVec3* noalias nocapture %_3_T, float* noalias nocapture %_5_Kr, float* noalias nocapture %_5_Kt, %struct.OpVec3* noalias nocapture %_5_T) {
+entry:
+  %0 = load float* %_5_Kr                         ; <float> [#uses=1]
+  call void @OpSmoothStep(float* %_5_Kr, float 0.000000e+00, float 5.000000e-01, float %0)
+  %1 = load float* %_5_Kr                         ; <float> [#uses=1]
+  call void @OpSubtract_ff(float* %_5_Kt, float 1.000000e+00, float %1)
+  call void @OpNormalize(%struct.OpVec3* %_5_T, %struct.OpVec3* %_3_T)
+  ret void
+}
+
+define i32 @efresnel(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_5_T_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  %_5_Kt_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_5_Kr_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_3_T_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_3_T_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 2, %struct.CgIter* %_5_Kr_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 3, %struct.CgIter* %_5_Kt_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 4, %struct.CgIter* %_5_T_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %6, %body ]   ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_3_T_iter) ; <float*> [#uses=1]
+  %_3_T_ptr = bitcast float* %2 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %3 = call float* @CgDerefIter(%struct.CgIter* %_5_Kr_iter) ; <float*> [#uses=1]
+  %4 = call float* @CgDerefIter(%struct.CgIter* %_5_Kt_iter) ; <float*> [#uses=1]
+  %5 = call float* @CgDerefIter(%struct.CgIter* %_5_T_iter) ; <float*> [#uses=1]
+  %_5_T_ptr = bitcast float* %5 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  call void @efresnel_kernel(%struct.OpVec3* %_3_T_ptr, float* %3, float* %4, %struct.OpVec3* %_5_T_ptr)
+  call void @CgIncIter(%struct.CgIter* %_3_T_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_Kr_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_Kt_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_T_iter)
+  %6 = add i32 %index, 1                          ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+
+define void @TestRudyCSkin_kernel15(%struct.OpVec3* noalias nocapture %_5_C, float* noalias nocapture %_5_Kr, %struct.OpVec3* noalias nocapture %_6_Ln, %struct.OpVec3* noalias nocapture %_Cl, %struct.OpVec3* noalias nocapture %_L, %struct.OpVec3* noalias nocapture %_Nn, %struct.OpVec3* noalias nocapture %_sheenColor, %struct.OpVec3* noalias nocapture %_T18, %struct.OpVec3* noalias nocapture %_Vf) {
+entry:
+  %_T10 = alloca float                            ; <float*> [#uses=2]
+  %_T7 = alloca %struct.OpVec3                    ; <%struct.OpVec3*> [#uses=8]
+  %_T6 = alloca %struct.OpVec3                    ; <%struct.OpVec3*> [#uses=8]
+  %_T5 = alloca i32                               ; <i32*> [#uses=2]
+  %_T4 = alloca float                             ; <float*> [#uses=8]
+  %_6_H = alloca %struct.OpVec3                   ; <%struct.OpVec3*> [#uses=3]
+  %_T3 = alloca %struct.OpVec3                    ; <%struct.OpVec3*> [#uses=2]
+  call void @OpNormalize(%struct.OpVec3* %_6_Ln, %struct.OpVec3* %_L)
+  call void @OpAdd_tt(%struct.OpVec3* %_T3, %struct.OpVec3* %_6_Ln, %struct.OpVec3* %_Vf)
+  call void @OpNormalize(%struct.OpVec3* %_6_H, %struct.OpVec3* %_T3)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_6_H, %struct.OpVec3* %_Nn)
+  %0 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpGT(i32* %_T5, float %0, float 0.000000e+00)
+  %1 = load i32* %_T5                             ; <i32> [#uses=1]
+  %tobool = icmp ne i32 %1, 0                     ; <i1> [#uses=1]
+  br i1 %tobool, label %then, label %else
+
+then:                                             ; preds = %entry
+  %2 = load float* %_5_Kr                         ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T6, float %2, %struct.OpVec3* %_sheenColor)
+  call void @OpMultiply_tt(%struct.OpVec3* %_T7, %struct.OpVec3* %_T6, %struct.OpVec3* %_Cl)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_6_Ln, %struct.OpVec3* %_Nn)
+  %3 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T6, float %3, %struct.OpVec3* %_T7)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_6_H, %struct.OpVec3* %_Nn)
+  %4 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpPow(float* %_T10, float %4, float 4.000000e+00)
+  %5 = load float* %_T10                          ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T7, float %5, %struct.OpVec3* %_T6)
+  call void @OpAdd_tt(%struct.OpVec3* %_5_C, %struct.OpVec3* %_5_C, %struct.OpVec3* %_T7)
+  br label %ifcont
+
+else:                                             ; preds = %entry
+  br label %ifcont
+
+ifcont:                                           ; preds = %else, %then
+  %6 = load float* %_5_Kr                         ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T6, float %6, %struct.OpVec3* %_sheenColor)
+  call void @OpMultiply_tt(%struct.OpVec3* %_T7, %struct.OpVec3* %_T6, %struct.OpVec3* %_Cl)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_6_Ln, %struct.OpVec3* %_Nn)
+  %7 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T6, float %7, %struct.OpVec3* %_T7)
+  call void @OpScale_ft(%struct.OpVec3* %_T7, float 0x3FC99999A0000000, %struct.OpVec3* %_T6)
+  call void @OpAdd_tt(%struct.OpVec3* %_5_C, %struct.OpVec3* %_5_C, %struct.OpVec3* %_T7)
+  call void @OpNegate_t(%struct.OpVec3* %_T18, %struct.OpVec3* %_6_Ln)
+  ret void
+}
+
+define i32 @TestRudyCSkin15(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_Vf_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_T18_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  %_sheenColor_iter = alloca %struct.CgIter       ; <%struct.CgIter*> [#uses=3]
+  %_Nn_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_L_iter = alloca %struct.CgIter                ; <%struct.CgIter*> [#uses=3]
+  %_Cl_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_6_Ln_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_5_Kr_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_5_C_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_5_C_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 2, %struct.CgIter* %_5_Kr_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 3, %struct.CgIter* %_6_Ln_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 4, %struct.CgIter* %_Cl_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 5, %struct.CgIter* %_L_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 6, %struct.CgIter* %_Nn_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 7, %struct.CgIter* %_sheenColor_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 8, %struct.CgIter* %_T18_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 9, %struct.CgIter* %_Vf_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %11, %body ]  ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_5_C_iter) ; <float*> [#uses=1]
+  %_5_C_ptr = bitcast float* %2 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %3 = call float* @CgDerefIter(%struct.CgIter* %_5_Kr_iter) ; <float*> [#uses=1]
+  %4 = call float* @CgDerefIter(%struct.CgIter* %_6_Ln_iter) ; <float*> [#uses=1]
+  %_6_Ln_ptr = bitcast float* %4 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %5 = call float* @CgDerefIter(%struct.CgIter* %_Cl_iter) ; <float*> [#uses=1]
+  %_Cl_ptr = bitcast float* %5 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %6 = call float* @CgDerefIter(%struct.CgIter* %_L_iter) ; <float*> [#uses=1]
+  %_L_ptr = bitcast float* %6 to %struct.OpVec3*  ; <%struct.OpVec3*> [#uses=1]
+  %7 = call float* @CgDerefIter(%struct.CgIter* %_Nn_iter) ; <float*> [#uses=1]
+  %_Nn_ptr = bitcast float* %7 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %8 = call float* @CgDerefIter(%struct.CgIter* %_sheenColor_iter) ; <float*> [#uses=1]
+  %_sheenColor_ptr = bitcast float* %8 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %9 = call float* @CgDerefIter(%struct.CgIter* %_T18_iter) ; <float*> [#uses=1]
+  %_T18_ptr = bitcast float* %9 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %10 = call float* @CgDerefIter(%struct.CgIter* %_Vf_iter) ; <float*> [#uses=1]
+  %_Vf_ptr = bitcast float* %10 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  call void @TestRudyCSkin_kernel15(%struct.OpVec3* %_5_C_ptr, float* %3, %struct.OpVec3* %_6_Ln_ptr, %struct.OpVec3* %_Cl_ptr, %struct.OpVec3* %_L_ptr, %struct.OpVec3* %_Nn_ptr, %struct.OpVec3* %_sheenColor_ptr, %struct.OpVec3* %_T18_ptr, %struct.OpVec3* %_Vf_ptr)
+  call void @CgIncIter(%struct.CgIter* %_5_C_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_Kr_iter)
+  call void @CgIncIter(%struct.CgIter* %_6_Ln_iter)
+  call void @CgIncIter(%struct.CgIter* %_Cl_iter)
+  call void @CgIncIter(%struct.CgIter* %_L_iter)
+  call void @CgIncIter(%struct.CgIter* %_Nn_iter)
+  call void @CgIncIter(%struct.CgIter* %_sheenColor_iter)
+  call void @CgIncIter(%struct.CgIter* %_T18_iter)
+  call void @CgIncIter(%struct.CgIter* %_Vf_iter)
+  %11 = add i32 %index, 1                         ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+
+define void @efresnel_kernel16(%struct.OpVec3* noalias nocapture %_3_T, float* noalias nocapture %_5_Kr2, float* noalias nocapture %_5_Kt2, %struct.OpVec3* noalias nocapture %_6_T2) {
+entry:
+  %0 = load float* %_5_Kr2                        ; <float> [#uses=1]
+  call void @OpSmoothStep(float* %_5_Kr2, float 0.000000e+00, float 5.000000e-01, float %0)
+  %1 = load float* %_5_Kr2                        ; <float> [#uses=1]
+  call void @OpSubtract_ff(float* %_5_Kt2, float 1.000000e+00, float %1)
+  call void @OpNormalize(%struct.OpVec3* %_6_T2, %struct.OpVec3* %_3_T)
+  ret void
+}
+
+define i32 @efresnel16(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_6_T2_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_5_Kt2_iter = alloca %struct.CgIter            ; <%struct.CgIter*> [#uses=3]
+  %_5_Kr2_iter = alloca %struct.CgIter            ; <%struct.CgIter*> [#uses=3]
+  %_3_T_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_3_T_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 2, %struct.CgIter* %_5_Kr2_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 3, %struct.CgIter* %_5_Kt2_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 4, %struct.CgIter* %_6_T2_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %6, %body ]   ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_3_T_iter) ; <float*> [#uses=1]
+  %_3_T_ptr = bitcast float* %2 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %3 = call float* @CgDerefIter(%struct.CgIter* %_5_Kr2_iter) ; <float*> [#uses=1]
+  %4 = call float* @CgDerefIter(%struct.CgIter* %_5_Kt2_iter) ; <float*> [#uses=1]
+  %5 = call float* @CgDerefIter(%struct.CgIter* %_6_T2_iter) ; <float*> [#uses=1]
+  %_6_T2_ptr = bitcast float* %5 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  call void @efresnel_kernel16(%struct.OpVec3* %_3_T_ptr, float* %3, float* %4, %struct.OpVec3* %_6_T2_ptr)
+  call void @CgIncIter(%struct.CgIter* %_3_T_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_Kr2_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_Kt2_iter)
+  call void @CgIncIter(%struct.CgIter* %_6_T2_iter)
+  %6 = add i32 %index, 1                          ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+
+define void @TestRudyCSkin_kernel17(%struct.OpVec3* noalias nocapture %_5_C, float* noalias nocapture %_5_Kt, float* noalias nocapture %_5_Kt2, %struct.OpVec3* noalias nocapture %_5_T, %struct.OpVec3* noalias nocapture %_6_Ln, %struct.OpVec3* noalias nocapture %_6_T2, %struct.OpVec3* noalias nocapture %_Cl, %struct.OpVec3* noalias nocapture %_Nn, %struct.OpVec3* noalias nocapture %_skinColor, float* noalias nocapture %_thickness) {
+entry:
+  %_T66 = alloca float                            ; <float*> [#uses=4]
+  %_T43 = alloca float                            ; <float*> [#uses=18]
+  %_T38 = alloca float                            ; <float*> [#uses=30]
+  %_T10 = alloca float                            ; <float*> [#uses=22]
+  %_1_costheta = alloca float                     ; <float*> [#uses=5]
+  %_T3 = alloca %struct.OpVec3                    ; <%struct.OpVec3*> [#uses=6]
+  %_2_won = alloca float                          ; <float*> [#uses=9]
+  %_2_win = alloca float                          ; <float*> [#uses=9]
+  %_T7 = alloca %struct.OpVec3                    ; <%struct.OpVec3*> [#uses=4]
+  %_T4 = alloca float                             ; <float*> [#uses=28]
+  %_T6 = alloca %struct.OpVec3                    ; <%struct.OpVec3*> [#uses=6]
+  call void @OpMultiply_tt(%struct.OpVec3* %_T6, %struct.OpVec3* %_skinColor, %struct.OpVec3* %_Cl)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_6_Ln, %struct.OpVec3* %_Nn)
+  %0 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T7, float %0, %struct.OpVec3* %_T6)
+  %1 = load float* %_5_Kt                         ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T6, float %1, %struct.OpVec3* %_T7)
+  %2 = load float* %_5_Kt2                        ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T7, float %2, %struct.OpVec3* %_T6)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_5_T, %struct.OpVec3* %_Nn)
+  %3 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpAbs(float* %_2_win, float %3)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_6_T2, %struct.OpVec3* %_Nn)
+  %4 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpAbs(float* %_2_won, float %4)
+  call void @OpNegate_t(%struct.OpVec3* %_T3, %struct.OpVec3* %_6_T2)
+  call void @OpDot(float* %_1_costheta, %struct.OpVec3* %_T3, %struct.OpVec3* %_5_T)
+  %5 = load float* %_1_costheta                   ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T4, float 0x3FF99999A0000000, float %5)
+  %6 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpSubtract_ff(float* %_T10, float 0x3FFA3D70C0000000, float %6)
+  %7 = load float* %_T10                          ; <float> [#uses=1]
+  call void @OpPow(float* %_T4, float %7, float 1.500000e+00)
+  %8 = load float* %_T4                           ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T10, float 0x3FD70A3D40000000, float %8)
+  %9 = load float* %_2_win                        ; <float> [#uses=1]
+  %10 = load float* %_2_won                       ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T4, float %9, float %10)
+  %11 = load float* %_T10                         ; <float> [#uses=1]
+  %12 = load float* %_T4                          ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T38, float %11, float %12)
+  %13 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T4, float 0x3FE99999A0000000, float %13)
+  %14 = load float* %_2_win                       ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T10, float 1.000000e+00, float %14)
+  %15 = load float* %_2_won                       ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T38, float 1.000000e+00, float %15)
+  %16 = load float* %_T10                         ; <float> [#uses=1]
+  %17 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T43, float %16, float %17)
+  %18 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpNegate_f(float* %_T10, float %18)
+  %19 = load float* %_T10                         ; <float> [#uses=1]
+  %20 = load float* %_thickness                   ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T38, float %19, float %20)
+  %21 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpExp(float* %_T10, float %21)
+  %22 = load float* %_T10                         ; <float> [#uses=1]
+  call void @OpSubtract_ff(float* %_T38, float 1.000000e+00, float %22)
+  %23 = load float* %_T4                          ; <float> [#uses=1]
+  %24 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T10, float %23, float %24)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_5_T, %struct.OpVec3* %_Nn)
+  %25 = load float* %_T4                          ; <float> [#uses=1]
+  call void @OpAbs(float* %_2_win, float %25)
+  call void @OpDot(float* %_T4, %struct.OpVec3* %_6_T2, %struct.OpVec3* %_Nn)
+  %26 = load float* %_T4                          ; <float> [#uses=1]
+  call void @OpAbs(float* %_2_won, float %26)
+  call void @OpNegate_t(%struct.OpVec3* %_T3, %struct.OpVec3* %_6_T2)
+  call void @OpDot(float* %_1_costheta, %struct.OpVec3* %_T3, %struct.OpVec3* %_5_T)
+  %27 = load float* %_1_costheta                  ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T4, float 0x3FE3333340000000, float %27)
+  %28 = load float* %_T4                          ; <float> [#uses=1]
+  call void @OpSubtract_ff(float* %_T38, float 0x3FF170A3E0000000, float %28)
+  %29 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpPow(float* %_T4, float %29, float 1.500000e+00)
+  %30 = load float* %_T4                          ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T38, float 0x3FED1EB840000000, float %30)
+  %31 = load float* %_2_win                       ; <float> [#uses=1]
+  %32 = load float* %_2_won                       ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T4, float %31, float %32)
+  %33 = load float* %_T38                         ; <float> [#uses=1]
+  %34 = load float* %_T4                          ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T43, float %33, float %34)
+  %35 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T4, float 5.000000e-01, float %35)
+  %36 = load float* %_2_win                       ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T38, float 1.000000e+00, float %36)
+  %37 = load float* %_2_won                       ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T43, float 1.000000e+00, float %37)
+  %38 = load float* %_T38                         ; <float> [#uses=1]
+  %39 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T66, float %38, float %39)
+  %40 = load float* %_T66                         ; <float> [#uses=1]
+  call void @OpNegate_f(float* %_T38, float %40)
+  %41 = load float* %_T38                         ; <float> [#uses=1]
+  %42 = load float* %_thickness                   ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T43, float %41, float %42)
+  %43 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpExp(float* %_T38, float %43)
+  %44 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpSubtract_ff(float* %_T43, float 1.000000e+00, float %44)
+  %45 = load float* %_T4                          ; <float> [#uses=1]
+  %46 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T38, float %45, float %46)
+  %47 = load float* %_T10                         ; <float> [#uses=1]
+  %48 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T4, float %47, float %48)
+  call void @OpDot(float* %_T10, %struct.OpVec3* %_5_T, %struct.OpVec3* %_Nn)
+  %49 = load float* %_T10                         ; <float> [#uses=1]
+  call void @OpAbs(float* %_2_win, float %49)
+  call void @OpDot(float* %_T10, %struct.OpVec3* %_6_T2, %struct.OpVec3* %_Nn)
+  %50 = load float* %_T10                         ; <float> [#uses=1]
+  call void @OpAbs(float* %_2_won, float %50)
+  call void @OpNegate_t(%struct.OpVec3* %_T3, %struct.OpVec3* %_6_T2)
+  call void @OpDot(float* %_1_costheta, %struct.OpVec3* %_T3, %struct.OpVec3* %_5_T)
+  call void @OpAssign_ff(float* %_T10, float 1.000000e+00)
+  %51 = load float* %_2_win                       ; <float> [#uses=1]
+  %52 = load float* %_2_won                       ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T38, float %51, float %52)
+  %53 = load float* %_T10                         ; <float> [#uses=1]
+  %54 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T43, float %53, float %54)
+  %55 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T10, float 0x3FD99999A0000000, float %55)
+  %56 = load float* %_2_win                       ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T38, float 1.000000e+00, float %56)
+  %57 = load float* %_2_won                       ; <float> [#uses=1]
+  call void @OpDivide_ff(float* %_T43, float 1.000000e+00, float %57)
+  %58 = load float* %_T38                         ; <float> [#uses=1]
+  %59 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T66, float %58, float %59)
+  %60 = load float* %_T66                         ; <float> [#uses=1]
+  call void @OpNegate_f(float* %_T38, float %60)
+  %61 = load float* %_T38                         ; <float> [#uses=1]
+  %62 = load float* %_thickness                   ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T43, float %61, float %62)
+  %63 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpExp(float* %_T38, float %63)
+  %64 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpSubtract_ff(float* %_T43, float 1.000000e+00, float %64)
+  %65 = load float* %_T10                         ; <float> [#uses=1]
+  %66 = load float* %_T43                         ; <float> [#uses=1]
+  call void @OpMultiply_ff(float* %_T38, float %65, float %66)
+  %67 = load float* %_T4                          ; <float> [#uses=1]
+  %68 = load float* %_T38                         ; <float> [#uses=1]
+  call void @OpAdd_ff(float* %_T10, float %67, float %68)
+  %69 = load float* %_T10                         ; <float> [#uses=1]
+  call void @OpScale_ft(%struct.OpVec3* %_T6, float %69, %struct.OpVec3* %_T7)
+  call void @OpAdd_tt(%struct.OpVec3* %_5_C, %struct.OpVec3* %_5_C, %struct.OpVec3* %_T6)
+  ret void
+}
+
+define i32 @TestRudyCSkin17(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_thickness_iter = alloca %struct.CgIter        ; <%struct.CgIter*> [#uses=3]
+  %_skinColor_iter = alloca %struct.CgIter        ; <%struct.CgIter*> [#uses=3]
+  %_Nn_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_Cl_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_6_T2_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_6_Ln_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_5_T_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  %_5_Kt2_iter = alloca %struct.CgIter            ; <%struct.CgIter*> [#uses=3]
+  %_5_Kt_iter = alloca %struct.CgIter             ; <%struct.CgIter*> [#uses=3]
+  %_5_C_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_5_C_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 2, %struct.CgIter* %_5_Kt_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 3, %struct.CgIter* %_5_Kt2_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 4, %struct.CgIter* %_5_T_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 5, %struct.CgIter* %_6_Ln_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 6, %struct.CgIter* %_6_T2_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 7, %struct.CgIter* %_Cl_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 8, %struct.CgIter* %_Nn_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 9, %struct.CgIter* %_skinColor_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 10, %struct.CgIter* %_thickness_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %12, %body ]  ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_5_C_iter) ; <float*> [#uses=1]
+  %_5_C_ptr = bitcast float* %2 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %3 = call float* @CgDerefIter(%struct.CgIter* %_5_Kt_iter) ; <float*> [#uses=1]
+  %4 = call float* @CgDerefIter(%struct.CgIter* %_5_Kt2_iter) ; <float*> [#uses=1]
+  %5 = call float* @CgDerefIter(%struct.CgIter* %_5_T_iter) ; <float*> [#uses=1]
+  %_5_T_ptr = bitcast float* %5 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %6 = call float* @CgDerefIter(%struct.CgIter* %_6_Ln_iter) ; <float*> [#uses=1]
+  %_6_Ln_ptr = bitcast float* %6 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %7 = call float* @CgDerefIter(%struct.CgIter* %_6_T2_iter) ; <float*> [#uses=1]
+  %_6_T2_ptr = bitcast float* %7 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %8 = call float* @CgDerefIter(%struct.CgIter* %_Cl_iter) ; <float*> [#uses=1]
+  %_Cl_ptr = bitcast float* %8 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %9 = call float* @CgDerefIter(%struct.CgIter* %_Nn_iter) ; <float*> [#uses=1]
+  %_Nn_ptr = bitcast float* %9 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %10 = call float* @CgDerefIter(%struct.CgIter* %_skinColor_iter) ; <float*> [#uses=1]
+  %_skinColor_ptr = bitcast float* %10 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %11 = call float* @CgDerefIter(%struct.CgIter* %_thickness_iter) ; <float*> [#uses=1]
+  call void @TestRudyCSkin_kernel17(%struct.OpVec3* %_5_C_ptr, float* %3, float* %4, %struct.OpVec3* %_5_T_ptr, %struct.OpVec3* %_6_Ln_ptr, %struct.OpVec3* %_6_T2_ptr, %struct.OpVec3* %_Cl_ptr, %struct.OpVec3* %_Nn_ptr, %struct.OpVec3* %_skinColor_ptr, float* %11)
+  call void @CgIncIter(%struct.CgIter* %_5_C_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_Kt_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_Kt2_iter)
+  call void @CgIncIter(%struct.CgIter* %_5_T_iter)
+  call void @CgIncIter(%struct.CgIter* %_6_Ln_iter)
+  call void @CgIncIter(%struct.CgIter* %_6_T2_iter)
+  call void @CgIncIter(%struct.CgIter* %_Cl_iter)
+  call void @CgIncIter(%struct.CgIter* %_Nn_iter)
+  call void @CgIncIter(%struct.CgIter* %_skinColor_iter)
+  call void @CgIncIter(%struct.CgIter* %_thickness_iter)
+  %12 = add i32 %index, 1                         ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}
+
+define void @TestRudyCSkin_kernel18(%struct.OpVec3* noalias nocapture %_5_C, %struct.OpVec3* noalias nocapture %_Ci) {
+entry:
+  call void @OpAssign_tt(%struct.OpVec3* %_Ci, %struct.OpVec3* %_5_C)
+  ret void
+}
+
+define i32 @TestRudyCSkin18(%struct.RslArg_v3* nocapture %rslContext, i32 %argc, %struct.RslArg** nocapture %argv) nounwind readnone {
+entry:
+  %_Ci_iter = alloca %struct.CgIter               ; <%struct.CgIter*> [#uses=3]
+  %_5_C_iter = alloca %struct.CgIter              ; <%struct.CgIter*> [#uses=3]
+  call void @CgGetIter(%struct.RslArg** %argv, i32 1, %struct.CgIter* %_5_C_iter)
+  call void @CgGetIter(%struct.RslArg** %argv, i32 2, %struct.CgIter* %_Ci_iter)
+  %0 = call i32 @CgNumValues(%struct.RslArg** %argv, i32 0) ; <i32> [#uses=1]
+  br label %test
+
+test:                                             ; preds = %body, %entry
+  %index = phi i32 [ 0, %entry ], [ %4, %body ]   ; <i32> [#uses=2]
+  %1 = icmp slt i32 %index, %0                    ; <i1> [#uses=1]
+  br i1 %1, label %body, label %done
+
+body:                                             ; preds = %test
+  %2 = call float* @CgDerefIter(%struct.CgIter* %_5_C_iter) ; <float*> [#uses=1]
+  %_5_C_ptr = bitcast float* %2 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  %3 = call float* @CgDerefIter(%struct.CgIter* %_Ci_iter) ; <float*> [#uses=1]
+  %_Ci_ptr = bitcast float* %3 to %struct.OpVec3* ; <%struct.OpVec3*> [#uses=1]
+  call void @TestRudyCSkin_kernel18(%struct.OpVec3* %_5_C_ptr, %struct.OpVec3* %_Ci_ptr)
+  call void @CgIncIter(%struct.CgIter* %_5_C_iter)
+  call void @CgIncIter(%struct.CgIter* %_Ci_iter)
+  %4 = add i32 %index, 1                          ; <i32> [#uses=1]
+  br label %test
+
+done:                                             ; preds = %test
+  ret i32 0
+}

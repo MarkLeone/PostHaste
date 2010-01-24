@@ -1,0 +1,7 @@
+float 1.000000e+00
+@0 = internal constant %struct.OpVec3 { [3 x float] [float 1.000000e+00, float 2.000000e+00, float 3.000000e+00] } ; <%struct.OpVec3*> [#uses=0]
+
+float* getelementptr inbounds ([3 x float]* @0, i32 0, i32 0)
+{ [3 x float] }* getelementptr inbounds ([2 x { [3 x float] }]* @0, i32 0, i32 0)
+i8* getelementptr ([6 x i8]* @0, i32 0, i32 0)
+i8** getelementptr inbounds ([3 x i8*]* @3, i32 0, i32 0)

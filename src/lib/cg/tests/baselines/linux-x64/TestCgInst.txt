@@ -1,0 +1,14 @@
+
+entry:
+  %0 = alloca float                               ; <float*> [#uses=2]
+  %1 = alloca float                               ; <float*> [#uses=0]
+  %2 = load float* %0                             ; <float> [#uses=1]
+  call void @OpNegate_f(float* %0, float %2)
+
+
+entry:
+  %0 = alloca float                               ; <float*> [#uses=1]
+  %1 = alloca float                               ; <float*> [#uses=1]
+  %2 = load float* %1                             ; <float> [#uses=1]
+  call void @OpAssign_ff(float* %0, float %2)
+

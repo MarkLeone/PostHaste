@@ -1,0 +1,8 @@
+surface foo(
+    uniform float param;
+    )
+{
+    varying float local;
+
+    x = negate(x);
+}

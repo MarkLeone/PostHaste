@@ -1,0 +1,304 @@
+---------- areacam.slo ----------
+// Free: {Eref, Pref, space, use_Eref}
+{
+    // Free: {Pref, space, use_Eref}
+    2_Pobj = transform("object", Pref);
+    2_Pareacam = transform(space, "current", 2_Pobj);
+    T2 = ne(use_Eref, 0);
+    // Free: {2_Pareacam, Eref, space, T2}
+    if (T2) {
+        // Free: {2_Pareacam, Eref, space}
+        3_Eobj = transform("object", Eref);
+        3_Eareacam = transform(space, "current", 3_Eobj);
+        2_Iareacam = subtract(2_Pareacam, 3_Eareacam);
+    }
+    else {
+        // Free: {2_Pareacam}
+        T3 = calculatenormal(2_Pareacam);
+        2_Iareacam = negate(T3);
+    }
+    // Free: {2_Iareacam, 2_Pareacam}
+    Oi = assign(1);
+    Ci = trace(2_Pareacam, 2_Iareacam);
+}
+---------- lumpy.slo ----------
+// Free: {frequency, Km, maxoctaves, N, Ps, shadingspace, truedisp}
+{
+    // Free: {frequency, Ps, shadingspace}
+    T0 = scale(frequency, Ps);
+    48_Pshad = transform(shadingspace, T0);
+    T2 = area(48_Pshad);
+    T1 = sqrt(T2);
+    48_dPshad = max(T1, 1e-06);
+    // Free: {48_dPshad, 48_Pshad, maxoctaves}
+    {
+        // Free: {48_dPshad, 48_Pshad}
+        18_amp = assign(1);
+        18_pp = assign(48_Pshad);
+        18_sum = assign(0);
+        18_fw = assign(48_dPshad);
+        18_i = assign(0);
+        // Free: {18_amp, 18_fw, 18_i, 18_pp, 18_sum, maxoctaves}
+        for (;
+            // Free: {18_i, maxoctaves}
+            T3 = lt(18_i, maxoctaves);
+            // Free: {18_i}
+            18_i = add(18_i, 1);
+            ) {
+            // Free: {18_amp, 18_fw, 18_pp, 18_sum}
+            T2 = noise(18_pp);
+            T1 = multiply(2, T2);
+            T2 = subtract(T1, 1);
+            T1 = smoothstep(0.2, 0.75, 18_fw);
+            T8 = subtract(1, T1);
+            T1 = multiply(T2, T8);
+            T2 = multiply(18_amp, T1);
+            18_sum = add(18_sum, T2);
+            18_amp = multiply(18_amp, 0.5);
+            18_pp = scale(2, 18_pp);
+            18_fw = multiply(18_fw, 2);
+        }
+        // Free: {18_sum}
+        48_magnitude = assign(18_sum);
+    }
+    // Free: {48_magnitude, Km, N}
+    T11 = normalize(N);
+    T12 = multiply(Km, 48_magnitude);
+    // Free: {Ps, shadingspace, T11, T12, truedisp}
+    {
+        // Free: {Ps, shadingspace, T11, T12, truedisp}
+        T13 = vtransform(shadingspace, T11);
+        46_spacescale = length(T13);
+        T2 = max(46_spacescale, 1e-06);
+        T1 = divide(T12, T2);
+        46_Ndisp = scale(T1, T11);
+        T13 = scale(truedisp, 46_Ndisp);
+        Pprechg();
+        Ps = add(Ps, T13);
+        T18 = subtract(1, truedisp);
+        T13 = scale(T18, 46_Ndisp);
+        T0 = add(Ps, T13);
+        T17 = calculatenormal(T0);
+        Nprechg();
+        N = normalize(T17);
+    }
+}
+---------- oak.slo ----------
+// Free: {__sdu, __sdv, angularwobble, angularwobblefreq, Cdarkwood, Clightwood, divotdepth, grainfreq, grainy, I, Ka, Kd, Ks, N, Ng, Os, Ps, ringfreq, ringnoise, ringnoisefreq, ringunevenness, ringy, roughness, shadingfreq, shadingspace, truedisp, trunkwobble, trunkwobblefreq}
+{
+    // Free: {I, N, Ng, Ps, shadingfreq, shadingspace}
+    T0 = transform(shadingspace, Ps);
+    95_Pshad = scale(shadingfreq, T0);
+    T2 = area(95_Pshad);
+    T1 = sqrt(T2);
+    95_dPshad = max(T1, 1e-06);
+    T3 = normalize(N);
+    95_Nf = faceforward(T3, I, Ng);
+    // Free: {95_dPshad, 95_Pshad, __sdu, __sdv, angularwobble, angularwobblefreq, grainfreq, grainy, ringfreq, ringnoise, ringnoisefreq, ringunevenness, ringy, trunkwobble, trunkwobblefreq}
+    {
+        // Free: {95_dPshad, 95_Pshad, ringnoisefreq}
+        T4 = scale(ringnoisefreq, 95_Pshad);
+        T5 = multiply(95_dPshad, ringnoisefreq);
+        // Free: {T4, T5}
+        {
+            // Free: {T4, T5}
+            65_amp = assign(1);
+            65_pp = assign(T4);
+            65_sum = assign(0);
+            65_fw = assign(T5);
+            65_i = assign(0);
+            // Free: {65_amp, 65_fw, 65_i, 65_pp, 65_sum}
+            for (;
+                // Free: {65_i}
+                T6 = lt(65_i, 2);
+                // Free: {65_i}
+                65_i = add(65_i, 1);
+                ) {
+                // Free: {65_amp, 65_fw, 65_pp, 65_sum}
+                T7 = noise(65_pp);
+                T8 = scale(2, T7);
+                T7 = subtract(T8, 1);
+                T2 = smoothstep(0.2, 0.75, 65_fw);
+                T1 = subtract(1, T2);
+                T8 = scale(T1, T7);
+                T7 = scale(65_amp, T8);
+                65_sum = add(65_sum, T7);
+                65_amp = multiply(65_amp, 0.5);
+                65_pp = scale(4, 65_pp);
+                65_fw = multiply(65_fw, 4);
+            }
+            // Free: {65_sum}
+            91_offset = assign(65_sum);
+        }
+        // Free: {91_offset, 95_Pshad, ringnoise, trunkwobble, trunkwobblefreq}
+        T7 = scale(ringnoise, 91_offset);
+        91_Pring = add(95_Pshad, T7);
+        T2 = zcomp(95_Pshad);
+        T1 = multiply(T2, trunkwobblefreq);
+        T7 = noise(T1);
+        T8 = scale(2, T7);
+        T7 = subtract(T8, 1);
+        T8 = scale(trunkwobble, T7);
+        T7 = multiply(T8, (1, 1, 0));
+        91_Pring = add(91_Pring, T7);
+        T23 = xcomp(91_Pring);
+        // Free: {T23}
+        {
+            // Free: {T23}
+            T2 = multiply(T23, T23);
+        }
+        // Free: {91_Pring}
+        T25 = ycomp(91_Pring);
+        // Free: {T25}
+        {
+            // Free: {T25}
+            T1 = multiply(T25, T25);
+        }
+        // Free: {91_Pring, __sdu, __sdv, angularwobble, angularwobblefreq, ringfreq, ringunevenness, T1, T2}
+        91_r2 = add(T2, T1);
+        T2 = sqrt(91_r2);
+        91_r = multiply(T2, ringfreq);
+        T2 = smoothstep(0, 5, 91_r);
+        T1 = multiply(angularwobble, T2);
+        T0 = scale(angularwobblefreq, 91_Pring);
+        T31 = multiply(T0, (1, 1, 0.1));
+        T2 = noise(T31);
+        T32 = multiply(2, T2);
+        T2 = subtract(T32, 1);
+        T32 = multiply(T1, T2);
+        91_r = add(91_r, T32);
+        T2 = Du(91_r);
+        T1 = multiply(T2, __sdu);
+        T2 = abs(T1);
+        T1 = Dv(91_r);
+        T32 = multiply(T1, __sdv);
+        T1 = abs(T32);
+        T32 = add(T2, T1);
+        91_dr = max(T32, 1e-06);
+        T2 = noise(91_r);
+        T1 = multiply(2, T2);
+        T2 = subtract(T1, 1);
+        T1 = smoothstep(0.2, 0.75, 91_dr);
+        T32 = subtract(1, T1);
+        T1 = multiply(T2, T32);
+        T2 = multiply(ringunevenness, T1);
+        91_r = add(91_r, T2);
+        // Free: {91_r}
+        {
+            // Free: {91_r}
+            T49 = mod(91_r, 1);
+            // Free: {T49}
+            {
+                // Free: {T49}
+                T2 = smoothstep(0.1, 0.55, T49);
+                T1 = smoothstep(0.7, 0.95, T49);
+                91_inring = subtract(T2, T1);
+            }
+        }
+        // Free: {95_Pshad, grainfreq}
+        T0 = scale(grainfreq, 95_Pshad);
+        91_Pgrain = multiply(T0, (1, 1, 0.05));
+        T2 = area(91_Pgrain);
+        T1 = sqrt(T2);
+        91_dPgrain = max(T1, 1e-06);
+        91_grain = assign(0);
+        91_amp = assign(1);
+        91_i = assign(0);
+        // Free: {91_amp, 91_dPgrain, 91_grain, 91_i, 91_inring, 91_Pgrain, grainy}
+        for (;
+            // Free: {91_i}
+            T55 = lt(91_i, 2);
+            // Free: {91_i}
+            91_i = add(91_i, 1);
+            ) {
+            // Free: {91_amp, 91_dPgrain, 91_grain, 91_i, 91_inring, 91_Pgrain, grainy}
+            {
+                // Free: {91_dPgrain}
+                T2 = smoothstep(0.2, 0.6, 91_dPgrain);
+                92_grain1valid = subtract(1, T2);
+                T57 = gt(92_grain1valid, 0);
+                // Free: {91_grain, 91_i, 91_inring, 91_Pgrain, 92_grain1valid, grainy, T57}
+                if (T57) {
+                    // Free: {91_grain, 91_i, 91_inring, 91_Pgrain, 92_grain1valid, grainy}
+                    {
+                        // Free: {91_i, 91_inring, 91_Pgrain, 92_grain1valid, grainy}
+                        T2 = noise(91_Pgrain);
+                        T1 = multiply(2, T2);
+                        T2 = subtract(T1, 1);
+                        93_g = multiply(92_grain1valid, T2);
+                        T2 = multiply(0.7, 91_inring);
+                        T1 = add(0.3, T2);
+                        93_g = multiply(93_g, T1);
+                        T2 = subtract(0.8, 93_g);
+                        T1 = clamp(T2, 0, 1);
+                        93_g = pow(T1, 2);
+                        T2 = smoothstep(0.5, 1, 93_g);
+                        93_g = multiply(grainy, T2);
+                        T66 = eq(91_i, 0);
+                        // Free: {91_inring, 92_grain1valid, T66}
+                        if (T66) {
+                            // Free: {91_inring, 92_grain1valid}
+                            T2 = multiply(0.4, 92_grain1valid);
+                            T1 = subtract(1, T2);
+                            91_inring = multiply(91_inring, T1);
+                        }
+                        // Free: {91_grain, 93_g}
+                        91_grain = max(91_grain, 93_g);
+                    }
+                }
+                // Free: {91_amp, 91_dPgrain, 91_Pgrain}
+                91_Pgrain = scale(2, 91_Pgrain);
+                91_dPgrain = multiply(91_dPgrain, 2);
+                91_amp = multiply(91_amp, 0.5);
+            }
+        }
+        // Free: {91_grain, 91_inring, ringy}
+        T2 = multiply(91_inring, ringy);
+        95_wood = mix(T2, 1, 91_grain);
+    }
+    // Free: {95_wood, Cdarkwood, Clightwood, divotdepth}
+    95_Cwood = mix(Clightwood, Cdarkwood, 95_wood);
+    T2 = negate(95_wood);
+    T72 = multiply(T2, divotdepth);
+    // Free: {95_Nf, Ps, T72, truedisp}
+    {
+        // Free: {95_Nf, Ps, T72, truedisp}
+        T7 = vtransform("shader", 95_Nf);
+        45_spacescale = length(T7);
+        T2 = max(45_spacescale, 1e-06);
+        T1 = divide(T72, T2);
+        45_Ndisp = scale(T1, 95_Nf);
+        T7 = scale(truedisp, 45_Ndisp);
+        Pprechg();
+        Ps = add(Ps, T7);
+        T78 = subtract(1, truedisp);
+        T7 = scale(T78, 45_Ndisp);
+        T0 = add(Ps, T7);
+        T3 = calculatenormal(T0);
+        T70 = normalize(T3);
+    }
+    // Free: {95_Cwood, 95_wood, I, Ka, Kd, Ks, Ng, roughness, T70}
+    95_Nf = faceforward(T70, I, Ng);
+    lightingstart(Ka, Kd, Ks, roughness, I, 95_Nf, 95_wood, 95_Cwood);
+    T2 = multiply(0.5, 95_wood);
+    T1 = subtract(1, T2);
+    T83 = multiply(Ks, T1);
+    // Free: {95_Cwood, 95_Nf, I, Ka, Kd, roughness, T83}
+    {
+        // Free: {95_Cwood, 95_Nf, I, Ka, Kd, roughness, T83}
+        T84 = ambient();
+        T85 = scale(Ka, T84);
+        T84 = diffuse(95_Nf);
+        T87 = scale(Kd, T84);
+        T84 = add(T85, T87);
+        T85 = multiply(95_Cwood, T84);
+        T7 = normalize(I);
+        T8 = negate(T7);
+        T84 = specular(95_Nf, T8, roughness);
+        T87 = scale(T83, T84);
+        Ci = add(T85, T87);
+    }
+    // Free: {Ci, Os}
+    Oi = assign(Os);
+    Ci = multiply(Ci, Oi);
+}

@@ -1,0 +1,46 @@
+# Makefiles that include must also include Makefile.common and must define
+# SRC_DIR, TEST_SRCS, OTHER_SRCS, and LIBS.  CLEANUP can optionally specify
+# files that should be removed after testing and by "make clean".  ALSO_MAKE
+# can optionally specify additional targets to be built.  TEST_PLATFORM can
+# optionally specify a baseline subdirectory if the results are
+# platform-specific.
+
+OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
+TEST_OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(TEST_SRCS))
+OTHER_OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(OTHER_SRCS))
+TEST_PROGS = $(patsubst %.cpp,$(OBJ_DIR)/%$(DOT_EXE),$(TEST_SRCS))
+TEST_OUTPUTS = $(patsubst %.cpp,$(OBJ_DIR)/%.txt,$(TEST_SRCS))
+LIBS := $(patsubst %,$(GEN_DIR)/lib/%,$(LIBS))
+
+CXXFLAGS += -Wno-unused-variable
+SYS_LIBS += libgtest.a 
+
+all: $(ALSO_MAKE) $(TEST_OUTPUTS:%=%.ok) 
+	@rm -f $(CLEANUP)
+
+.PHONY: objects
+objects: $(ALSO_MAKE) $(TEST_OBJECTS) $(OTHER_OBJECTS)
+
+.PHONY: update
+update:
+	cp $(TEST_OUTPUTS) baselines/$(TEST_PLATFORM)
+
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+$(TEST_PROGS): %: %.o $(OTHER_OBJECTS) $(LIBS)
+	$(CXX) -o $@ $(LDFLAGS) $< $(LIBS) $(SYS_LIBS)
+
+$(TEST_OUTPUTS): %.txt: %$(DOT_EXE)
+	$< > $@
+
+%.ok: %
+	diff $< baselines/$(TEST_PLATFORM)/$(notdir $<)
+	touch $@
+
+clean:
+	rm -rf $(OBJ_DIR) $(CLEANUP)
+
+-include $(TEST_OBJECTS:%.o=%.d)
+

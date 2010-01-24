@@ -1,0 +1,16 @@
+float
+float[3]
+t1
+struct t1 {
+    uniform float x;
+}
+t2
+struct t2 {
+    uniform float x;
+    varying float[3] y;
+}
+t3
+struct t3 {
+    uniform t1 a;
+    uniform t2[3] b;
+}

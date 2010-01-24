@@ -1,0 +1,40 @@
+# Makefiles that include this must also include Makefile.common and must define
+# SRCS, SRC_DIR, DSO_NAME, and LIBS
+
+OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
+OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRCS))
+DSO_FILE = $(INST_DIR)/bin/$(DSO_NAME)$(DOT_SO)
+LIBS := $(patsubst %,$(GEN_DIR)/lib/%,$(LIBS))
+
+CXXFLAGS += -I$(RMANTREE)/include
+ifeq (osx-x86,$(ARCH))
+    CXXFLAGS += -m64
+    LDFLAGS += -m64 -bundle -undefined dynamic_lookup 
+endif
+ifeq (linux-x64,$(ARCH))
+    CXXFLAGS += -fPIC
+    LDFLAGS += -shared
+endif
+
+all:
+	$(MAKE) $(DSO_FILE)
+
+tests:
+	$(MAKE) -C tests
+
+objects: $(OBJECTS)
+
+$(DSO_FILE): $(OBJECTS) $(LIBS)
+	@mkdir -p $(dir $@)
+	$(CXX) -o $@ $(LDFLAGS) $(OBJECTS) $(LIBS) $(SYS_LIBS)
+        # TODO: strip sybmols in release build
+
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+clean:
+	rm -rf $(OBJ_DIR)
+	$(MAKE) clean -C tests
+
+-include $(OBJECTS:%.o=%.d)

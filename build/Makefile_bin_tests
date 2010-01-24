@@ -1,0 +1,18 @@
+# Makefiles that include must also include Makefile.common and must 
+# define SRC_DIR, TEST_EXE, and TEST_INPUTS.
+
+OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
+TEST_OUTPUTS = $(patsubst %,$(OBJ_DIR)/%.txt,$(TEST_INPUTS))
+TEST_EXE := $(INST_DIR)/bin/$(TEST_EXE)$(DOT_EXE)
+
+all: $(TEST_OUTPUTS)
+
+$(TEST_OUTPUTS): $(OBJ_DIR)/%.txt: $(TEST_EXE) %
+	@mkdir -p $(OBJ_DIR)
+	$(TEST_EXE) $* > $@.tmp
+	diff $@.tmp baselines/$(notdir $@)
+	mv $@.tmp $@
+
+clean:
+	rm -rf $(OBJ_DIR)
+

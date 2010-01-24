@@ -1,0 +1,26 @@
+TestAssign: {x2, x3}
+TestArrayAssign: {x1, x2, x3}
+TestArgKill: {x2, x3}
+TestAssignKill: {x2}
+TestBlock: {x2}
+TestSeq: {x2}
+TestLive1.slo: {a, b}
+TestLive2.slo: {a, b, x, y}
+TestLive3.slo: {a, b}
+TestLive4.slo: {2_x, a, b}
+TestLiveLoop1.slo: {a, n, y}
+TestLiveLoop2.slo: {n, y}
+TestLiveLoop3.slo: {a, n}
+TestLiveLoop4.slo: {a, n, x}
+TestLiveLoop5.slo: {a, x, y}
+TestLiveLoop6.slo: {a, x}
+TestLiveLoop7.slo: {a, x, y}
+TestLiveLoop8.slo: {y}
+TestLiveLoop9.slo: {y}
+TestLiveLoop10.slo: {y}
+TestLiveIllum1.slo: {Ci, N, Ps}
+TestLiveIllum2.slo: {Ci, Ps, x}
+TestLiveIllum3.slo: {Ci, Ps}
+TestLiveIllum4.slo: {a, Ci, Ps, x}
+TestLiveIllum5.slo: {a, Ci, Ps, x}
+TestLiveIllum6.slo: {a, Ci, Ps, x}

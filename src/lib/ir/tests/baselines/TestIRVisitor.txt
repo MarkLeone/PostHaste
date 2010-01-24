@@ -1,0 +1,6 @@
+IRIfStmt
+IRBlock
+_negate
+IRBlock
+_negate
+sin

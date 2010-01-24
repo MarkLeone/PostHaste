@@ -1,0 +1,89 @@
+shader_obj 4.2 1 0
+areacam 33 3 16 11 17 0 4 4 0 4 13 1
+12 145
+rgb
+current
+object
+world
+!!anyspace!!
+/Users/mleone/Personal/posthaste/tests/ARMan
+.:
+areacam.sl
+surface
+
+$meta_1404
+$meta___PRMAN_RELEASE__1404
+3
+0
+1
+-1e+10
+0
+33
+$meta___PRMAN_RELEASE__ 6 2 -1 10 3 0 0 0 0 0 0
+$meta___PRMAN_RELEASE_TAG__ 6 2 -1 11 3 0 0 0 0 0 0
+$S0 6 2 -1 0 3 0 0 0 0 0 0
+$S2 6 2 -1 1 3 0 0 0 0 7 11
+$S3 6 2 -1 2 3 0 0 0 0 6 10
+$S4 6 2 -1 3 3 0 0 0 0 1 1
+$S6 6 2 -1 4 3 0 0 0 0 0 0
+$srcDir 6 2 -1 5 3 0 0 0 0 0 0
+$includePath 6 2 -1 6 3 0 0 0 0 0 0
+$S7 6 2 -1 7 3 0 0 0 0 1 17
+$C1 4 2 -1 0 3 0 0 0 0 4 8
+$C2 4 2 -1 1 3 0 0 0 0 15 15
+$S9 6 2 -1 8 3 0 0 5 5 0 0
+$C3 4 2 -1 2 3 0 0 0 0 2 3
+$S10 6 2 -1 9 3 0 0 17 17 0 0
+space 6 5 -1 15 3 1 1 1 1 7 11
+Pref 2 5 1 16 2 1 2 2 2 6 6
+Eref 2 5 1 17 2 1 3 3 3 10 10
+use_Eref 4 5 -1 18 3 1 4 4 4 8 8
+Oi 3 10 0 0 2 0 0 15 15 0 0
+Ci 3 10 0 0 2 0 0 16 16 0 0
+$2_Pobj 2 3 1 0 2 0 0 6 6 7 7
+$2_Pareacam 2 3 1 0 2 0 0 7 7 12 16
+$2_Iareacam 21 3 1 0 2 0 0 12 14 16 16
+$3_Eobj 2 3 1 0 2 0 0 10 10 11 11
+$3_Eareacam 2 3 1 0 2 0 0 11 11 12 12
+$CodeMain 9 8 -1 0 2 0 0 0 0 4 17
+$T2 11 4 -1 0 3 0 0 8 14 9 14
+$Code0 9 8 -1 0 2 0 0 0 0 9 12
+$Code1 9 8 -1 0 2 0 0 0 0 12 14
+$Code2 9 8 -1 0 2 0 0 0 0 9 9
+$Cond0 10 11 -1 0 2 0 0 9 14 9 14
+$T3 22 4 1 0 2 0 0 13 13 14 14
+44
+15 5 
+16 13 
+17 13 
+18 10 
+12 
+21 4 16 
+22 15 3 21 
+27 18 10 
+27 30 28 29 31 
+24 4 17 
+25 15 3 24 
+23 22 25 
+32 22 
+23 32 
+19 11 
+20 22 23 
+14 
+_assign 	2 0  7 22 0
+_assign 	2 2  7 23 0
+_assign 	2 4  7 24 0
+_assign 	2 6  7 25 0
+_enterproc 	1 8  7 22 1
+transform 	3 9  7 27 2
+transform 	4 12  7 28 2
+_ne		3 16  7 30 2
+_if		5 19  7 30 2
+transform 	3 24  7 32 3
+transform 	4 27  7 33 3
+_subtract 	3 31  7 34 3
+calculatenormal 2 34  7 37 4
+_negate 	2 36  7 37 4
+_assign 	2 38  7 40 2
+trace		3 40  7 41 2
+_enterproc 	1 43  7 22 1

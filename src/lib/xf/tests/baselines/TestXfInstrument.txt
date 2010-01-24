@@ -1,0 +1,181 @@
+---------- TestLiveRudyCSkin.slo ----------
+surface TestLiveRudyCSkin(
+    uniform vector Vf = assign(0);
+    uniform normal Nn = assign(0);
+    uniform color skinColor = assign(0);
+    uniform color sheenColor = assign(0);
+    uniform float eta = assign(0);
+    uniform float thickness = assign(0);
+    )
+{
+    varying float 1_costheta;
+    varying float 2_win;
+    varying float 2_won;
+    varying vector 3_R;
+    varying vector 3_T;
+    varying float 5_Kr;
+    varying float 5_Kt;
+    varying float 5_Kr2;
+    varying float 5_Kt2;
+    varying color 5_C;
+    varying vector 5_T;
+    varying vector 6_Ln;
+    varying vector 6_H;
+    varying vector 6_T2;
+    uniform vector T0;
+    varying bool T1;
+    varying vector T3;
+    varying float T4;
+    varying bool T5;
+    varying color T6;
+    varying color T7;
+    varying float T10;
+    varying vector T18;
+    varying float T38;
+    varying float T43;
+    varying float T66;
+    uniform float TT_0;
+    uniform float TT_1;
+
+    #line 38 "TestLiveRudyCSkin.sl"
+    5_C = assign(0);
+    T0 = negate(Vf);
+    { // efresnel
+        #line 25 "TestLiveRudyCSkin.sl"
+        fresnel(T0, Nn, eta, 5_Kr, 5_Kt, 3_R, 3_T);
+        5_Kr = smoothstep(0, 0.5, 5_Kr);
+        5_Kt = subtract(1, 5_Kr);
+        5_T = normalize(3_T);
+    } // efresnel
+    #line 42 "TestLiveRudyCSkin.sl"
+    lightingstart(Vf, Nn, skinColor, sheenColor, eta, thickness, 3_R, 3_T, 5_Kr, 5_Kt, 5_C, 5_T);
+    illuminance (Ps, Nn, 1.5708) {
+        TT_0 = StartTimer();
+        6_Ln = normalize(L);
+        T3 = add(6_Ln, Vf);
+        6_H = normalize(T3);
+        T4 = dot(6_H, Nn);
+        T5 = gt(T4, 0);
+        if (T5) {
+            T6 = scale(5_Kr, sheenColor);
+            T7 = multiply(T6, Cl);
+            T4 = dot(6_Ln, Nn);
+            T6 = scale(T4, T7);
+            T4 = dot(6_H, Nn);
+            T10 = pow(T4, 4);
+            T7 = scale(T10, T6);
+            5_C = add(5_C, T7);
+        }
+        T6 = scale(5_Kr, sheenColor);
+        T7 = multiply(T6, Cl);
+        T4 = dot(6_Ln, Nn);
+        T6 = scale(T4, T7);
+        T7 = scale(0.2, T6);
+        5_C = add(5_C, T7);
+        T18 = negate(6_Ln);
+        TT_0 = StopTimer();
+        { // efresnel
+            #line 25 "TestLiveRudyCSkin.sl"
+            fresnel(T18, Nn, eta, 5_Kr2, 5_Kt2, 3_R, 3_T);
+            5_Kr2 = smoothstep(0, 0.5, 5_Kr2);
+            5_Kt2 = subtract(1, 5_Kr2);
+            6_T2 = normalize(3_T);
+        } // efresnel
+        TT_1 = StartTimer();
+        #line 51 "TestLiveRudyCSkin.sl"
+        T6 = multiply(skinColor, Cl);
+        T4 = dot(6_Ln, Nn);
+        T7 = scale(T4, T6);
+        T6 = scale(5_Kt, T7);
+        T7 = scale(5_Kt2, T6);
+        { // singleScatter
+            #line 16 "TestLiveRudyCSkin.sl"
+            T4 = dot(5_T, Nn);
+            2_win = abs(T4);
+            T4 = dot(6_T2, Nn);
+            2_won = abs(T4);
+            { // phase
+                #line 11 "TestLiveRudyCSkin.sl"
+                T3 = negate(6_T2);
+                1_costheta = dot(T3, 5_T);
+                T4 = multiply(1.6, 1_costheta);
+                T10 = subtract(1.64, T4);
+                T4 = pow(T10, 1.5);
+                T10 = divide(0.36, T4);
+            } // phase
+            #line 19 "TestLiveRudyCSkin.sl"
+            T4 = add(2_win, 2_won);
+            T38 = divide(T10, T4);
+            T4 = multiply(0.8, T38);
+            T10 = divide(1, 2_win);
+            T38 = divide(1, 2_won);
+            T43 = add(T10, T38);
+            T10 = negate(T43);
+            T38 = multiply(T10, thickness);
+            T10 = exp(T38);
+            T38 = subtract(1, T10);
+            T10 = multiply(T4, T38);
+        } // singleScatter
+        { // singleScatter
+            #line 16 "TestLiveRudyCSkin.sl"
+            T4 = dot(5_T, Nn);
+            2_win = abs(T4);
+            T4 = dot(6_T2, Nn);
+            2_won = abs(T4);
+            { // phase
+                #line 11 "TestLiveRudyCSkin.sl"
+                T3 = negate(6_T2);
+                1_costheta = dot(T3, 5_T);
+                T4 = multiply(0.6, 1_costheta);
+                T38 = subtract(1.09, T4);
+                T4 = pow(T38, 1.5);
+                T38 = divide(0.91, T4);
+            } // phase
+            #line 19 "TestLiveRudyCSkin.sl"
+            T4 = add(2_win, 2_won);
+            T43 = divide(T38, T4);
+            T4 = multiply(0.5, T43);
+            T38 = divide(1, 2_win);
+            T43 = divide(1, 2_won);
+            T66 = add(T38, T43);
+            T38 = negate(T66);
+            T43 = multiply(T38, thickness);
+            T38 = exp(T43);
+            T43 = subtract(1, T38);
+            T38 = multiply(T4, T43);
+        } // singleScatter
+        #line 53 "TestLiveRudyCSkin.sl"
+        T4 = add(T10, T38);
+        { // singleScatter
+            #line 16 "TestLiveRudyCSkin.sl"
+            T10 = dot(5_T, Nn);
+            2_win = abs(T10);
+            T10 = dot(6_T2, Nn);
+            2_won = abs(T10);
+            { // phase
+                #line 11 "TestLiveRudyCSkin.sl"
+                T3 = negate(6_T2);
+                1_costheta = dot(T3, 5_T);
+                T10 = assign(1);
+            } // phase
+            #line 19 "TestLiveRudyCSkin.sl"
+            T38 = add(2_win, 2_won);
+            T43 = divide(T10, T38);
+            T10 = multiply(0.4, T43);
+            T38 = divide(1, 2_win);
+            T43 = divide(1, 2_won);
+            T66 = add(T38, T43);
+            T38 = negate(T66);
+            T43 = multiply(T38, thickness);
+            T38 = exp(T43);
+            T43 = subtract(1, T38);
+            T38 = multiply(T10, T43);
+        } // singleScatter
+        #line 54 "TestLiveRudyCSkin.sl"
+        T10 = add(T4, T38);
+        T6 = scale(T10, T7);
+        5_C = add(5_C, T6);
+        TT_1 = StopTimer();
+    }
+    Ci = assign(5_C);
+}

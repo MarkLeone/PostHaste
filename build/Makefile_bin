@@ -1,0 +1,28 @@
+# Makefiles that include this must also include Makefile.common and must define
+# SRCS, SRC_DIR, EXE_NAME, and LIBS
+
+OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
+OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRCS))
+EXE_FILE = $(INST_DIR)/bin/$(EXE_NAME)$(DOT_EXE)
+LIBS := $(patsubst %,$(GEN_DIR)/lib/%,$(LIBS))
+
+all:
+	$(MAKE) $(EXE_FILE)
+
+tests:
+
+objects: $(OBJECTS)
+
+$(EXE_FILE): $(OBJECTS) $(LIBS)
+	@mkdir -p $(dir $@)
+	$(CXX) -o $@ $(LDFLAGS) $(OBJECTS) $(LIBS) $(SYS_LIBS)
+        # TODO: strip sybmols in release build
+
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+clean:
+	rm -rf $(OBJ_DIR)
+
+-include $(OBJECTS:%.o=%.d)

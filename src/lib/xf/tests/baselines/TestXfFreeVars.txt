@@ -1,0 +1,501 @@
+TestAssign: {x2, x3}
+TestArrayAssign: {x1, x2, x3}
+TestArgKill: {x2, x3}
+TestAssignKill: {x2}
+TestBlock: {x2}
+TestSeq: {x2}
+---------- TestLive1.slo ----------
+Partition: FreeVars = {a, b, x}
+{ // surface
+    #line 6 "TestLive1.sl"
+    print(a);
+    T0 = gt(b, 0);
+    if (T0) {
+        x = assign(1);
+    }
+    else {
+        x = assign(2);
+    }
+    print(x);
+    print(b);
+} // surface
+
+Shader: TestLive1
+Instructions: 7
+Num compiled partitions: 1
+Average partition length: 7.00
+Max partition length: 7
+Partition lengths: 7 
+
+---------- TestLive2.slo ----------
+Partition: FreeVars = {a, b, x, y}
+{ // surface
+    #line 6 "TestLive2.sl"
+    T0 = gt(a, 0);
+    if (T0) {
+        x = assign(1);
+    }
+    T0 = gt(b, 0);
+    if (T0) {
+        x = assign(2);
+    }
+    else {
+        y = assign(1);
+    }
+    print(x);
+    print(y);
+} // surface
+
+Shader: TestLive2
+Instructions: 9
+Num compiled partitions: 1
+Average partition length: 9.00
+Max partition length: 9
+Partition lengths: 9 
+
+---------- TestLive3.slo ----------
+Partition: FreeVars = {a, b}
+{ // surface
+    #line 6 "TestLive3.sl"
+    2_c = add(a, 1);
+    2_d = add(b, 1);
+    T0 = gt(a, 0);
+    if (T0) {
+        print(2_c);
+    }
+} // surface
+
+Shader: TestLive3
+Instructions: 5
+Num compiled partitions: 1
+Average partition length: 5.00
+Max partition length: 5
+Partition lengths: 5 
+
+---------- TestLive4.slo ----------
+Partition: FreeVars = {2_x, a, b}
+{ // surface
+    #line 7 "TestLive4.sl"
+    T0 = gt(a, 0);
+    if (T0) {
+        2_x = assign(1);
+    }
+    T0 = gt(b, 0);
+    if (T0) {
+        print(2_x);
+    }
+} // surface
+
+Shader: TestLive4
+Instructions: 6
+Num compiled partitions: 1
+Average partition length: 6.00
+Max partition length: 6
+Partition lengths: 6 
+
+---------- TestLiveLoop1.slo ----------
+Partition: FreeVars = {a, n, y}
+{ // surface
+    #line 6 "TestLiveLoop1.sl"
+    2_i = assign(n);
+    for (; gt(2_i, 2); ) {
+        y = add(y, a);
+        2_i = subtract(2_i, 1);
+    }
+    print(y);
+} // surface
+
+Shader: TestLiveLoop1
+Instructions: 6
+Num compiled partitions: 1
+Average partition length: 6.00
+Max partition length: 6
+Partition lengths: 6 
+
+---------- TestLiveLoop2.slo ----------
+Partition: FreeVars = {n, y}
+{ // surface
+    #line 6 "TestLiveLoop2.sl"
+    2_i = assign(n);
+    for (; gt(2_i, 2); ) {
+        y = assign(0);
+        2_i = subtract(2_i, 1);
+    }
+    print(y);
+} // surface
+
+Shader: TestLiveLoop2
+Instructions: 6
+Num compiled partitions: 1
+Average partition length: 6.00
+Max partition length: 6
+Partition lengths: 6 
+
+---------- TestLiveLoop3.slo ----------
+Partition: FreeVars = {a, n, x}
+{ // surface
+    #line 6 "TestLiveLoop3.sl"
+    x = assign(0);
+    for (; lt(x, n); x = add(x, a)) {
+    }
+    print(x);
+} // surface
+
+Shader: TestLiveLoop3
+Instructions: 5
+Num compiled partitions: 1
+Average partition length: 5.00
+Max partition length: 5
+Partition lengths: 5 
+
+---------- TestLiveLoop4.slo ----------
+Partition: FreeVars = {a, n, x}
+{ // surface
+    for (; lt(a, n); x = assign(0)) {
+        #line 7 "TestLiveLoop4.sl"
+        print(x);
+        T2 = eq(x, 0);
+        if (T2) {
+            break;
+        }
+    }
+} // surface
+
+Shader: TestLiveLoop4
+Instructions: 7
+Num compiled partitions: 1
+Average partition length: 7.00
+Max partition length: 7
+Partition lengths: 7 
+
+---------- TestLiveLoop5.slo ----------
+Partition: FreeVars = {a, x, y}
+{ // surface
+    for (; lt(x, a); ) {
+        #line 7 "TestLiveLoop5.sl"
+        x = assign(a);
+        y = add(y, 1);
+    }
+    print(y);
+} // surface
+
+Shader: TestLiveLoop5
+Instructions: 5
+Num compiled partitions: 1
+Average partition length: 5.00
+Max partition length: 5
+Partition lengths: 5 
+
+---------- TestLiveLoop6.slo ----------
+Partition: FreeVars = {a, x, y}
+{ // surface
+    for (; lt(x, a); x = add(x, y)) {
+        #line 7 "TestLiveLoop6.sl"
+        y = assign(1);
+    }
+} // surface
+
+Shader: TestLiveLoop6
+Instructions: 4
+Num compiled partitions: 1
+Average partition length: 4.00
+Max partition length: 4
+Partition lengths: 4 
+
+---------- TestLiveLoop7.slo ----------
+Partition: FreeVars = {a, x, y}
+{ // surface
+    for (; lt(x, a); y = assign(1)) {
+        #line 7 "TestLiveLoop7.sl"
+        x = add(x, y);
+    }
+} // surface
+
+Shader: TestLiveLoop7
+Instructions: 4
+Num compiled partitions: 1
+Average partition length: 4.00
+Max partition length: 4
+Partition lengths: 4 
+
+---------- TestLiveLoop8.slo ----------
+Partition: FreeVars = {x, y}
+{ // surface
+    for (; (x = assign(1), lt(x, y)); y = subtract(y, 1)) {
+    }
+    #line 8 "TestLiveLoop8.sl"
+    print(x);
+} // surface
+
+Shader: TestLiveLoop8
+Instructions: 5
+Num compiled partitions: 1
+Average partition length: 5.00
+Max partition length: 5
+Partition lengths: 5 
+
+---------- TestLiveLoop9.slo ----------
+Partition: FreeVars = {x, y}
+{ // surface
+    for (; (x = assign(1), lt(x, y)); y = subtract(y, 1)) {
+        #line 7 "TestLiveLoop9.sl"
+        print(x);
+    }
+} // surface
+
+Shader: TestLiveLoop9
+Instructions: 5
+Num compiled partitions: 1
+Average partition length: 5.00
+Max partition length: 5
+Partition lengths: 5 
+
+---------- TestLiveLoop10.slo ----------
+Partition: FreeVars = {x, y}
+{ // surface
+    for (; (x = assign(1), lt(x, y)); y = subtract(y, x)) {
+    }
+} // surface
+
+Shader: TestLiveLoop10
+Instructions: 4
+Num compiled partitions: 1
+Average partition length: 4.00
+Max partition length: 4
+Partition lengths: 4 
+
+---------- TestLiveIllum1.slo ----------
+Partition: FreeVars = {Ci, Cl}
+#line 5 "TestLiveIllum1.sl"
+Ci = add(Ci, Cl);
+
+Shader: TestLiveIllum1
+Instructions: 3
+Num compiled partitions: 1
+Average partition length: 1.00
+Max partition length: 1
+Partition lengths: 1 
+
+---------- TestLiveIllum2.slo ----------
+Partition: FreeVars = {Ci, Cl, x}
+#line 6 "TestLiveIllum2.sl"
+Ci = add(Ci, Cl);
+x = assign(0);
+
+Partition: FreeVars = {x}
+#line 9 "TestLiveIllum2.sl"
+print(x);
+
+Shader: TestLiveIllum2
+Instructions: 5
+Num compiled partitions: 2
+Average partition length: 1.50
+Max partition length: 2
+Partition lengths: 2 1 
+
+---------- TestLiveIllum3.slo ----------
+Partition: FreeVars = {Ci, Cl}
+#line 7 "TestLiveIllum3.sl"
+3_c = assign(Cl);
+T1 = comp(3_c, 0);
+T2 = gt(T1, 0.1);
+if (T2) {
+    Ci = add(Ci, Cl);
+}
+
+Shader: TestLiveIllum3
+Instructions: 7
+Num compiled partitions: 1
+Average partition length: 5.00
+Max partition length: 5
+Partition lengths: 5 
+
+---------- TestLiveIllum4.slo ----------
+Partition: FreeVars = {Ci, Cl}
+#line 7 "TestLiveIllum4.sl"
+Ci = add(Ci, Cl);
+
+Shader: TestLiveIllum4
+Instructions: 3
+Num compiled partitions: 1
+Average partition length: 1.00
+Max partition length: 1
+Partition lengths: 1 
+
+---------- TestLiveIllum5.slo ----------
+Partition: FreeVars = {Ci, Cl, x}
+#line 7 "TestLiveIllum5.sl"
+T1 = scale(x, Cl);
+Ci = add(Ci, T1);
+
+Shader: TestLiveIllum5
+Instructions: 4
+Num compiled partitions: 1
+Average partition length: 2.00
+Max partition length: 2
+Partition lengths: 2 
+
+---------- TestLiveIllum6.slo ----------
+Partition: FreeVars = {Ci, Cl}
+#line 7 "TestLiveIllum6.sl"
+Ci = add(Ci, Cl);
+
+Partition: FreeVars = {x}
+#line 9 "TestLiveIllum6.sl"
+print(x);
+
+Shader: TestLiveIllum6
+Instructions: 4
+Num compiled partitions: 2
+Average partition length: 1.00
+Max partition length: 1
+Partition lengths: 1 1 
+
+---------- TestLiveRudyCSkin.slo ----------
+Partition: FreeVars = {5_C}
+#line 38 "TestLiveRudyCSkin.sl"
+5_C = assign(0);
+
+Partition: FreeVars = {3_T, 5_Kr, 5_Kt, 5_T}
+#line 26 "TestLiveRudyCSkin.sl"
+5_Kr = smoothstep(0, 0.5, 5_Kr);
+5_Kt = subtract(1, 5_Kr);
+5_T = normalize(3_T);
+
+Partition: FreeVars = {5_C, 5_Kr, 6_Ln, Cl, L, Nn, sheenColor, T18, Vf}
+#line 43 "TestLiveRudyCSkin.sl"
+6_Ln = normalize(L);
+T3 = add(6_Ln, Vf);
+6_H = normalize(T3);
+T4 = dot(6_H, Nn);
+T5 = gt(T4, 0);
+if (T5) {
+    T6 = scale(5_Kr, sheenColor);
+    T7 = multiply(T6, Cl);
+    T4 = dot(6_Ln, Nn);
+    T6 = scale(T4, T7);
+    T4 = dot(6_H, Nn);
+    T10 = pow(T4, 4);
+    T7 = scale(T10, T6);
+    5_C = add(5_C, T7);
+}
+T6 = scale(5_Kr, sheenColor);
+T7 = multiply(T6, Cl);
+T4 = dot(6_Ln, Nn);
+T6 = scale(T4, T7);
+T7 = scale(0.2, T6);
+5_C = add(5_C, T7);
+T18 = negate(6_Ln);
+
+Partition: FreeVars = {3_T, 5_Kr2, 5_Kt2, 6_T2}
+#line 26 "TestLiveRudyCSkin.sl"
+5_Kr2 = smoothstep(0, 0.5, 5_Kr2);
+5_Kt2 = subtract(1, 5_Kr2);
+6_T2 = normalize(3_T);
+
+Partition: FreeVars = {5_C, 5_Kt, 5_Kt2, 5_T, 6_Ln, 6_T2, Cl, Nn, skinColor, thickness}
+#line 51 "TestLiveRudyCSkin.sl"
+T6 = multiply(skinColor, Cl);
+T4 = dot(6_Ln, Nn);
+T7 = scale(T4, T6);
+T6 = scale(5_Kt, T7);
+T7 = scale(5_Kt2, T6);
+{ // singleScatter
+    #line 16 "TestLiveRudyCSkin.sl"
+    T4 = dot(5_T, Nn);
+    2_win = abs(T4);
+    T4 = dot(6_T2, Nn);
+    2_won = abs(T4);
+    { // phase
+        #line 11 "TestLiveRudyCSkin.sl"
+        T3 = negate(6_T2);
+        1_costheta = dot(T3, 5_T);
+        T4 = multiply(1.6, 1_costheta);
+        T10 = subtract(1.64, T4);
+        T4 = pow(T10, 1.5);
+        T10 = divide(0.36, T4);
+    } // phase
+    #line 19 "TestLiveRudyCSkin.sl"
+    T4 = add(2_win, 2_won);
+    T38 = divide(T10, T4);
+    T4 = multiply(0.8, T38);
+    T10 = divide(1, 2_win);
+    T38 = divide(1, 2_won);
+    T43 = add(T10, T38);
+    T10 = negate(T43);
+    T38 = multiply(T10, thickness);
+    T10 = exp(T38);
+    T38 = subtract(1, T10);
+    T10 = multiply(T4, T38);
+} // singleScatter
+{ // singleScatter
+    #line 16 "TestLiveRudyCSkin.sl"
+    T4 = dot(5_T, Nn);
+    2_win = abs(T4);
+    T4 = dot(6_T2, Nn);
+    2_won = abs(T4);
+    { // phase
+        #line 11 "TestLiveRudyCSkin.sl"
+        T3 = negate(6_T2);
+        1_costheta = dot(T3, 5_T);
+        T4 = multiply(0.6, 1_costheta);
+        T38 = subtract(1.09, T4);
+        T4 = pow(T38, 1.5);
+        T38 = divide(0.91, T4);
+    } // phase
+    #line 19 "TestLiveRudyCSkin.sl"
+    T4 = add(2_win, 2_won);
+    T43 = divide(T38, T4);
+    T4 = multiply(0.5, T43);
+    T38 = divide(1, 2_win);
+    T43 = divide(1, 2_won);
+    T66 = add(T38, T43);
+    T38 = negate(T66);
+    T43 = multiply(T38, thickness);
+    T38 = exp(T43);
+    T43 = subtract(1, T38);
+    T38 = multiply(T4, T43);
+} // singleScatter
+#line 53 "TestLiveRudyCSkin.sl"
+T4 = add(T10, T38);
+{ // singleScatter
+    #line 16 "TestLiveRudyCSkin.sl"
+    T10 = dot(5_T, Nn);
+    2_win = abs(T10);
+    T10 = dot(6_T2, Nn);
+    2_won = abs(T10);
+    { // phase
+        #line 11 "TestLiveRudyCSkin.sl"
+        T3 = negate(6_T2);
+        1_costheta = dot(T3, 5_T);
+        T10 = assign(1);
+    } // phase
+    #line 19 "TestLiveRudyCSkin.sl"
+    T38 = add(2_win, 2_won);
+    T43 = divide(T10, T38);
+    T10 = multiply(0.4, T43);
+    T38 = divide(1, 2_win);
+    T43 = divide(1, 2_won);
+    T66 = add(T38, T43);
+    T38 = negate(T66);
+    T43 = multiply(T38, thickness);
+    T38 = exp(T43);
+    T43 = subtract(1, T38);
+    T38 = multiply(T10, T43);
+} // singleScatter
+#line 54 "TestLiveRudyCSkin.sl"
+T10 = add(T4, T38);
+T6 = scale(T10, T7);
+5_C = add(5_C, T6);
+
+Partition: FreeVars = {5_C, Ci}
+#line 56 "TestLiveRudyCSkin.sl"
+Ci = assign(5_C);
+
+Shader: TestLiveRudyCSkin
+Instructions: 103
+Num compiled partitions: 6
+Average partition length: 16.33
+Max partition length: 69
+Partition lengths: 1 3 21 3 69 1 
+
