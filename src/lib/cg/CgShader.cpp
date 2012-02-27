@@ -324,7 +324,7 @@ CgShader::GenKernelLoop(llvm::Function* entryFunc, llvm::Function* kernelFunc,
     GenDerefIterators(args, iterators, &kernelArgs);
 
     // Generate call to kernel function, passing the data pointers.
-    mBuilder->CreateCall(kernelFunc, kernelArgs.begin(), kernelArgs.end());
+    mBuilder->CreateCall(kernelFunc, kernelArgs);
 
     // Increment the iterators.
     llvm::Function* incIter = mModule->getFunction("CgIncIter");
@@ -371,7 +371,7 @@ CgShader::GenLoop(llvm::Value* loopBound, llvm::Value** loopIndex)
     //    %less = icmp slt i32 %index, %N
     mBuilder->SetInsertPoint(testBlock);
     llvm::PHINode* indexPhi =
-        mBuilder->CreatePHI(llvm::Type::getInt32Ty(*mContext), "index");
+        mBuilder->CreatePHI(llvm::Type::getInt32Ty(*mContext), 2, "index");
     indexPhi->addIncoming(GetInt(0), predBlock);
     llvm::Value* lessThan = 
         mBuilder->CreateICmp(llvm::CmpInst::ICMP_SLT, indexPhi, loopBound);
@@ -581,7 +581,7 @@ CgShader::GenRslFuncTable()
 
     // Update the RslPublicFunctions initializer.
     // XXX does this cause the old initializer to leak?
-    llvm::Constant* newInit = llvm::ConstantStruct::get(*mContext, elements);
+    llvm::Constant* newInit = llvm::ConstantStruct::getAnon(*mContext, elements);
 
     // Sanity check the function table type.
     llvm::Type* rslFuncTableTy =
@@ -626,7 +626,7 @@ CgShader::GenRslFuncArray()
 
     // We need a null string pointer.
     llvm::Type* charTy = llvm::Type::getInt8Ty(*mContext);
-    const llvm::PointerType* stringTy = 
+    llvm::PointerType* stringTy = 
         llvm::PointerType::get(charTy, CgTypes::kDefaultAddressSpace);
     llvm::Constant* nullStringPtr = llvm::ConstantPointerNull::get(stringTy);
 
@@ -636,7 +636,7 @@ CgShader::GenRslFuncArray()
     rslFuncs.push_back(terminator);
 
     // Generate a constant array of these RslFunction structs.
-    const llvm::ArrayType* arrayTy =
+    llvm::ArrayType* arrayTy =
         llvm::ArrayType::get(terminator->getType(), rslFuncs.size());
     llvm::Constant* funcArray = llvm::ConstantArray::get(arrayTy, rslFuncs);
 
@@ -665,7 +665,7 @@ CgShader::GenRslFunction(llvm::Constant* function, llvm::Constant* prototype,
     elements[2] = voidFuncPtr;
     elements[3] = voidFuncPtr;
 
-    llvm::Constant* rslFunc = llvm::ConstantStruct::get(*mContext, elements);
+    llvm::Constant* rslFunc = llvm::ConstantStruct::getAnon(*mContext, elements);
     assert(rslFunc->getType() == rslFuncTy && "Type mismatch in GenRslFunc");
     return rslFunc;
 }

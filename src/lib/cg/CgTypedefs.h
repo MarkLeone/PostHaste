@@ -7,8 +7,10 @@
 
 namespace llvm {
     class ConstantFolder;
-    template <bool preserveNames, typename Folder> class IRBuilder;
+    template <bool preserveNames> class IRBuilderDefaultInserter;
+    template <bool preserveNames, typename Folder, typename Inserter> class IRBuilder;
 }
-typedef llvm::IRBuilder<true, llvm::ConstantFolder> CgBuilder;
+typedef llvm::IRBuilder< true, llvm::ConstantFolder,
+                         llvm::IRBuilderDefaultInserter<true> > CgBuilder;
 
 #endif // ndef CG_TYPEDEFS_H

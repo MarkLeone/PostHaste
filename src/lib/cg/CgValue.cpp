@@ -79,11 +79,11 @@ llvm::Value*
 CgValue::ConvertArrayPtr(llvm::Value* value) const
 {
     // If it's not a pointer to an array, return it unmodified.
-    const llvm::PointerType* ptrTy = 
+    llvm::PointerType* ptrTy = 
         llvm::dyn_cast<llvm::PointerType>(value->getType());
     if (ptrTy == NULL)
         return value;
-    const llvm::ArrayType* arrayTy = 
+    llvm::ArrayType* arrayTy = 
         llvm::dyn_cast<llvm::ArrayType>(ptrTy->getElementType());
     if (arrayTy == NULL)
         return value;
@@ -91,7 +91,7 @@ CgValue::ConvertArrayPtr(llvm::Value* value) const
     // Generate a "getelementptr" instruction that references the first element.
     llvm::Constant* zero = GetInt(0);
     llvm::Value* indices[] = { zero, zero };
-    return mBuilder->CreateInBoundsGEP(value, indices, indices+2);
+    return mBuilder->CreateInBoundsGEP(value, llvm::ArrayRef<llvm::Value*>(indices, indices+2));
 }
 
 

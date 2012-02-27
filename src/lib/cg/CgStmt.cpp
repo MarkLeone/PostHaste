@@ -9,6 +9,7 @@
 #include "ops/Opcode.h"
 #include "util/UtLog.h"
 #include <llvm/DerivedTypes.h>
+#include <llvm/Function.h>
 #include <llvm/Support/IRBuilder.h>
 #include <llvm/Type.h>
 #include <llvm/Value.h>

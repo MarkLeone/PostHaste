@@ -5,6 +5,7 @@
 #include "cg/CgTypes.h"
 #include "ir/IRTypes.h"
 #include "util/UtCast.h"
+#include <llvm/ADT/ArrayRef.h>
 #include <llvm/Type.h>
 #include <llvm/DerivedTypes.h>
 
@@ -45,7 +46,7 @@ CgTypes::GetVecTy(unsigned int length) const
 {
     llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
     llvm::Type* arrayTy = llvm::ArrayType::get(floatTy, length);
-    return llvm::StructType::get(*mContext, arrayTy, NULL);
+    return llvm::StructType::get(*mContext, llvm::ArrayRef<llvm::Type*>(&arrayTy, 1));
 }
 
 // Get the type of a matrix, which is a struct containing an array of
@@ -55,7 +56,7 @@ CgTypes::GetMatrixTy() const
 {
     llvm::Type* vecTy = GetVecTy(4);
     llvm::Type* arrayTy = llvm::ArrayType::get(vecTy, 4);
-    return llvm::StructType::get(*mContext, arrayTy, NULL);
+    return llvm::StructType::get(*mContext, llvm::ArrayRef<llvm::Type*>(&arrayTy, 1));
 }
 
 
@@ -90,7 +91,7 @@ CgTypes::Convert(const IRType* ty) const
           std::vector<llvm::Type*> memberTypes(numMembers);
           for (unsigned int i = 0; i < numMembers; ++i)
               memberTypes[i] = Convert(structTy->GetMemberType(i));
-          return llvm::StructType::get(*mContext, memberTypes);
+          return llvm::StructType::get(*mContext, llvm::ArrayRef<llvm::Type*>(memberTypes));
       }
       case kIRNumTypeKinds:
           assert(false && "Invalid IR type");

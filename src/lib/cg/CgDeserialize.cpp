@@ -16,7 +16,8 @@ CgDeserialize(const unsigned char* bitcode, size_t size,
 {
     const char *data = reinterpret_cast<const char *>(bitcode);
     llvm::MemoryBuffer* buffer =
-        llvm::MemoryBuffer::getMemBuffer(data, data + size);
+        llvm::MemoryBuffer::getMemBuffer(llvm::StringRef(data, size), "module", 
+                                         false /*RequiresNullTerminator*/);
 
     // Parse the bitcode into a Module
     std::string errInfo;

@@ -9,6 +9,7 @@
 #include <llvm/Constants.h>
 #include <llvm/DerivedTypes.h>
 #include <llvm/ADT/SmallVector.h>
+#include <llvm/GlobalVariable.h>
 #include <llvm/Support/IRBuilder.h>
 
 // Convert an IR constant to an LLVM constant.
@@ -55,8 +56,8 @@ CgConst::MakeFloatArray(const float* data, unsigned int length) const
     std::vector<llvm::Constant*> elements(length);
     for (unsigned int i = 0; i < length; ++i)
         elements[i] = llvm::ConstantFP::get(floatTy, data[i]);
-    const llvm::ArrayType* arrayTy = llvm::ArrayType::get(floatTy, length);
-    return llvm::ConstantArray::get(arrayTy, &elements[0], length);
+    llvm::ArrayType* arrayTy = llvm::ArrayType::get(floatTy, length);
+    return llvm::ConstantArray::get(arrayTy, elements);
 }
 
 // Make a vector constant, which is a struct containing a float array.
@@ -65,7 +66,7 @@ llvm::Constant*
 CgConst::MakeVector(const float* data, unsigned int length) const
 {
     llvm::Constant* array = MakeFloatArray(data, length);
-    return llvm::ConstantStruct::get(*mContext, &array, 1);
+    return llvm::ConstantStruct::getAnon(*mContext, llvm::ArrayRef<llvm::Constant*>(&array, 1));
 }
 
 // Make a matrix constant, which is a struct containing an array of 4-vectors.
@@ -79,9 +80,9 @@ CgConst::MakeMatrix(const float* data) const
     vectors[2] = MakeVector(data+8, 4);
     vectors[3] = MakeVector(data+12, 4);
     llvm::Type* vecTy = vectors[0]->getType();
-    const llvm::ArrayType* arrayTy = llvm::ArrayType::get(vecTy, 4);
-    llvm::Constant* array = llvm::ConstantArray::get(arrayTy, &vectors[0], 4);
-    return llvm::ConstantStruct::get(*mContext, &array, 1);
+    llvm::ArrayType* arrayTy = llvm::ArrayType::get(vecTy, 4);
+    llvm::Constant* array = llvm::ConstantArray::get(arrayTy, vectors);
+    return llvm::ConstantStruct::getAnon(*mContext, llvm::ArrayRef<llvm::Constant*>(&array, 1));
 }
 
 llvm::Constant* 
@@ -107,9 +108,9 @@ CgConst::ConvertNumArray(const IRNumArrayConst* array) const
     }
 
     // Construct array type and construct an LLVM array constant.
-    const llvm::ArrayType* llvmTy = 
+    llvm::ArrayType* llvmTy = 
         llvm::ArrayType::get(mTypes->Convert(elemTy), length);
-    return llvm::ConstantArray::get(llvmTy, &elements[0], length);
+    return llvm::ConstantArray::get(llvmTy, elements);
 }
 
 llvm::Constant* 
@@ -146,8 +147,8 @@ CgConst::ConvertStringArray(const IRStringArrayConst* array) const
     unsigned int length = array->GetLength();
     for (unsigned int i = 0; i < length; ++i) {
         llvm::Constant* stringVal = ConvertStringData(array->GetElement(i));
-        arrayVal = 
-            llvm::ConstantExpr::getInsertValue(arrayVal, stringVal, &i, 1);
+        arrayVal = llvm::ConstantExpr::getInsertValue(arrayVal, stringVal,
+                                                      llvm::ArrayRef<unsigned>(&i, 1));
     }
     return arrayVal;
 }

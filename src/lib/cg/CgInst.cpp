@@ -16,6 +16,7 @@
 #include <llvm/Instructions.h>
 #include <llvm/Module.h>
 #include <llvm/Support/IRBuilder.h>
+#include <llvm/Support/raw_ostream.h>
 #include <ctype.h>
 #include <iostream>
 #include <sstream>
@@ -107,9 +108,9 @@ SanityCheckArgs(const llvm::Function::ArgumentListType& params,
     for (; param != params.end(); ++param, ++arg) {
         // XXX debugging
         if (param->getType() != (*arg)->getType())
-            std::cout << "Shadeop arg type mismatch: expected " 
-                      << *param->getType() << "\nfound "
-                      << **arg << std::endl;
+            llvm::outs() << "Shadeop arg type mismatch: expected " 
+                         << *param->getType() << "\nfound "
+                         << **arg << "\n";
         assert(param->getType() == (*arg)->getType() &&
                "Shadeop arg type mismatch");
     }
@@ -154,5 +155,5 @@ CgInst::GenOpCall(llvm::Function* op, const IRInst& inst) const
 
     // Generate function call.
     SanityCheckArgs(op->getArgumentList(), argVals);
-    mBuilder->CreateCall(op, argVals.begin(), argVals.end());
+    mBuilder->CreateCall(op, argVals);
 }
