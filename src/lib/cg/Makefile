@@ -25,13 +25,12 @@ CXXFLAGS += -I$(LLVM_DIR)/include
 
 # We compile the plugin skeleton with limited optimization, since we don't
 # want the various helper functions to be inlined.
-LLVM_GXX_OPTS = -m64 -O1 -S -emit-llvm -I$(RMANTREE)/include -I..
+CLANG_OPTS = -m64 -O1 -c -emit-llvm -I$(RMANTREE)/include -I..
 
 include $(TOP_DIR)/build/Makefile_lib
 
 %.bc: %.cpp $(TOP_DIR)/src/lib/ops/OpTypes.h
-	llvm-g++ $(LLVM_GXX_OPTS) -o $(OBJ_DIR)/$<.s $<
-	llvm-as -f -o $@ $(OBJ_DIR)/$<.s 
+	clang $(CLANG_OPTS) -o $@ $<
 
 $(OBJ_DIR)/%.bc.cpp: %.bc
 	@echo "// Auto-generated from" $< > $@

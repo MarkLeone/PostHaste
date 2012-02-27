@@ -2,6 +2,8 @@
 # SRCS, SRC_DIR, and LIB_NAME.  Optionally, ALSO_MAKE can be an extra
 # target, and ALSO_LINK can be additional object files.
 
+ALSO_MAKE ?=
+ALSO_LINK ?=
 OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
 OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRCS)) $(ALSO_LINK)
 LIB_FILE = $(GEN_DIR)/lib/$(LIB_NAME)

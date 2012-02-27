@@ -5,6 +5,9 @@
 # optionally specify a baseline subdirectory if the results are
 # platform-specific.
 
+ALSO_MAKE ?=
+OTHER_SRCS ?=
+CLEANUP ?=
 OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
 TEST_OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(TEST_SRCS))
 OTHER_OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(OTHER_SRCS))

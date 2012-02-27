@@ -15,13 +15,12 @@ SRC_DIR = src/lib/ops
 LIB_NAME = libops.a
 ALSO_MAKE = $(GEN_DIR)/lib/Ops.bc.o
 
-LLVM_GXX_OPTS = -m64 -O2 -S -emit-llvm -I$(RMANTREE)/include -I..
+CLANG_OPTS = -m64 -O2 -c -emit-llvm -I$(RMANTREE)/include -I..
 
 include $(TOP_DIR)/build/Makefile_lib
 
 $(OBJ_DIR)/%.bc: %.cpp OpTypes.h
-	llvm-g++ $(LLVM_GXX_OPTS) -o $(OBJ_DIR)/$<.s $<
-	llvm-as -f -o $@ $(OBJ_DIR)/$<.s 
+	clang $(CLANG_OPTS) -o $@ $<
 
 %.bc.cpp: %.bc
 	@echo "// Auto-generated from" $< > $@
