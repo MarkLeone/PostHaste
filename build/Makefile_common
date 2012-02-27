@@ -23,6 +23,9 @@ INST_DIR = $(TOP_DIR)/inst/$(ARCH)/$(CONFIG)
 EXT_DIR = $(TOP_DIR)/ext/inst/$(ARCH)/$(CONFIG)
 TOOLS_DIR = $(TOP_DIR)/tools
 
+# Avoid undefined variable warnings
+NULL :=#
+
 # Debug/optimize
 ifeq ($(CONFIG), debug)
     CXXFLAGS += -g
@@ -38,7 +41,7 @@ CXXFLAGS += \
     -W \
     -Wall \
     -Wextra \
-    -Wconversion \
+    -Wno-conversion \
     -Wno-deprecated \
     -Wno-parentheses \
     -Wno-unused-parameter \
