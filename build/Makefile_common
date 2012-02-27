@@ -64,4 +64,19 @@ ifeq ($(ARCH), linux-x64)
 endif
 
 # LLVM libraries
-LLVM_LIBS = -lLLVMLinker -lLLVMipo -lLLVMipa -lLLVMTarget -lLLVMScalarOpts -lLLVMTransformUtils -lLLVMAnalysis -lLLVMBitReader -lLLVMBitWriter -lLLVMCore -lLLVMSupport -lLLVMSystem
+LLVM_LIBS = \
+	-L$(LLVM_DIR)/lib \
+	-lLLVMLinker \
+	-lLLVMipo \
+	-lLLVMInstrumentation \
+	-lLLVMBitWriter \
+	-lLLVMBitReader \
+	-lLLVMScalarOpts \
+	-lLLVMInstCombine \
+	-lLLVMTransformUtils \
+	-lLLVMipa \
+	-lLLVMTarget \
+	-lLLVMAnalysis \
+	-lLLVMCore \
+	-lLLVMSupport \
+	$(NULL)

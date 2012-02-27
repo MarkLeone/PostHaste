@@ -1,6 +1,7 @@
 # Makefiles that include this must also include Makefile.common and must define
 # SRCS, SRC_DIR, EXE_NAME, and LIBS
 
+LDFLAGS ?=
 OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
 OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 EXE_FILE = $(INST_DIR)/bin/$(EXE_NAME)$(DOT_EXE)

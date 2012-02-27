@@ -273,7 +273,7 @@ start:
 		}
 	}
 	if ((optchar = (int)*place++) == (int)':' ||
-	    (oli = strchr(options + (IGNORE_FIRST ? 1 : 0), optchar)) == NULL) {
+	    (oli = strchr(const_cast<char*>(options) + (IGNORE_FIRST ? 1 : 0), optchar)) == NULL) {
 		/* option letter unknown or ':' */
 		if (!*place)
 			++optind;

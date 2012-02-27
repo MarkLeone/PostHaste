@@ -14,6 +14,7 @@
 #include "xf/XfRaise.h"
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/Module.h>
+#include <llvm/Support/raw_os_ostream.h>
 #include <fcntl.h>                      // for O_RDW, O_CREAT
 #include <libgen.h>                     // for basename()
 #include <sys/types.h>                  // for mode_t
@@ -198,7 +199,9 @@ main(int argc, const char** argv)
         std::ofstream out(bitcodeName.c_str(),
                           std::ios::out | std::ios::binary);
         if (out.is_open()) {
-            llvm::WriteBitcodeToFile(module, out);
+            llvm::raw_os_ostream raw(out);
+            llvm::WriteBitcodeToFile(module, raw);
+            raw.flush();
             out.close();
             if (!options.mQuiet)
                 log.Write(kUtInfo, "Wrote %s", bitcodeName.c_str());
