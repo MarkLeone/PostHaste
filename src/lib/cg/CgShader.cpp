@@ -274,7 +274,7 @@ CgShader::GenIterators(llvm::Function* entryFunc, const IRVars& args,
                        std::vector<llvm::Value*>* iterators)
 {
     // Get the iterator type.
-    const llvm::Type* iterTy = mModule->getTypeByName("struct.CgIter");
+    llvm::Type* iterTy = mModule->getTypeByName("struct.CgIter");
     assert(iterTy && "Iterator type not found in plugin skeleton");
 
     // Get the CgIter() helper function.
@@ -423,7 +423,7 @@ CgShader::GenDerefIterators(const IRVars& args,
         llvm::Value* data = mBuilder->CreateCall(derefIter, iterVal);
         // Cast to the argument type.  For now all parameters are passed by
         // reference.
-        const llvm::Type* argType = 
+        llvm::Type* argType = 
             mTypes->ConvertParamType(argVar->GetType(), true /*isOutput*/);
         llvm::Value* argVal =
             mBuilder->CreateBitCast(data, argType, argName+"_ptr");
@@ -479,19 +479,19 @@ CgShader::GenKernelFunc(const char* nameHint, const IRVars& args)
 
     // Gather parameter types.  For now, all parameters are passed by
     // reference, since we don't know which ones are outputs.
-    std::vector<const llvm::Type*> argTypes;
+    std::vector<llvm::Type*> argTypes;
     argTypes.reserve(numArgs);
     IRVars::const_iterator v;
     for (v = args.begin(); v != args.end(); ++v) {
         IRVar* var = *v;
-        const llvm::Type* ty = 
+        llvm::Type* ty = 
             mTypes->ConvertParamType(var->GetType(), true /*isOutput*/);
         argTypes.push_back(ty);
     }
 
     // Create LLVM function type.
-    const llvm::Type* voidTy = llvm::Type::getVoidTy(*mContext);
-    const llvm::FunctionType* funcTy =
+    llvm::Type* voidTy = llvm::Type::getVoidTy(*mContext);
+    llvm::FunctionType* funcTy =
         llvm::FunctionType::get(voidTy, argTypes, false);
 
     // Create function definition.  Note that LLVM will create a unique
@@ -584,7 +584,7 @@ CgShader::GenRslFuncTable()
     llvm::Constant* newInit = llvm::ConstantStruct::get(*mContext, elements);
 
     // Sanity check the function table type.
-    const llvm::Type* rslFuncTableTy =
+    llvm::Type* rslFuncTableTy =
         mModule->getTypeByName("struct.RslFunctionTable");
     if (rslFuncTableTy == NULL)
         assert(false && "No RslFunctionTable type in plugin skeleton");
@@ -600,7 +600,7 @@ llvm::Constant*
 CgShader::GenRslFuncArray()
 {
     // Look up the RslFunction and RslFunctionTable types.
-    const llvm::Type* rslFuncTy = mModule->getTypeByName("struct.RslFunction");
+    llvm::Type* rslFuncTy = mModule->getTypeByName("struct.RslFunction");
     assert(rslFuncTy && "No RslFunction type in plugin skeleton");
 
     // Generate an array of constant RslFunction structs, one for each entry
@@ -625,7 +625,7 @@ CgShader::GenRslFuncArray()
     llvm::Constant* voidFuncPtr = GetGlobalInitializer("gCgNullEntryFunc");
 
     // We need a null string pointer.
-    const llvm::Type* charTy = llvm::Type::getInt8Ty(*mContext);
+    llvm::Type* charTy = llvm::Type::getInt8Ty(*mContext);
     const llvm::PointerType* stringTy = 
         llvm::PointerType::get(charTy, CgTypes::kDefaultAddressSpace);
     llvm::Constant* nullStringPtr = llvm::ConstantPointerNull::get(stringTy);
@@ -653,7 +653,7 @@ CgShader::GenRslFuncArray()
 // pointers, but those are guarded by an #ifdef, and absent by default.
 llvm::Constant*
 CgShader::GenRslFunction(llvm::Constant* function, llvm::Constant* prototype,
-                         const llvm::Type* rslFuncTy)
+                         llvm::Type* rslFuncTy)
 {
     // We need a null RslVoidFunc pointer.  Function typedefs don't get
     // recorded in bitcode, so we use the initializer of a global null var.

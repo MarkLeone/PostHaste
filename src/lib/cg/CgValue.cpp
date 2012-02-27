@@ -99,7 +99,7 @@ CgValue::ConvertArrayPtr(llvm::Value* value) const
 llvm::Value* 
 CgValue::BoolToBit(llvm::Value* condVal) const
 {
-    const llvm::Type* boolTy = llvm::Type::getInt32Ty(*mContext);
+    llvm::Type* boolTy = llvm::Type::getInt32Ty(*mContext);
     assert(condVal->getType() == boolTy && "Expected bool condition value");
     llvm::Value* zero = llvm::ConstantInt::get(boolTy, 0);
     return mBuilder->CreateICmpNE(condVal, zero, "tobool");

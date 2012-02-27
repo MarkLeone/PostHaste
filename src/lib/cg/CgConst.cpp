@@ -34,7 +34,7 @@ CgConst::ConvertNumData(const float* data, const IRType* ty) const
 {
     // Float constant?
     if (ty->IsFloat()) {
-        const llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
+        llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
         return llvm::ConstantFP::get(floatTy, data[0]);
     }
 
@@ -51,7 +51,7 @@ CgConst::ConvertNumData(const float* data, const IRType* ty) const
 llvm::Constant* 
 CgConst::MakeFloatArray(const float* data, unsigned int length) const
 {
-    const llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
+    llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
     std::vector<llvm::Constant*> elements(length);
     for (unsigned int i = 0; i < length; ++i)
         elements[i] = llvm::ConstantFP::get(floatTy, data[i]);
@@ -78,7 +78,7 @@ CgConst::MakeMatrix(const float* data) const
     vectors[1] = MakeVector(data+4, 4);
     vectors[2] = MakeVector(data+8, 4);
     vectors[3] = MakeVector(data+12, 4);
-    const llvm::Type* vecTy = vectors[0]->getType();
+    llvm::Type* vecTy = vectors[0]->getType();
     const llvm::ArrayType* arrayTy = llvm::ArrayType::get(vecTy, 4);
     llvm::Constant* array = llvm::ConstantArray::get(arrayTy, &vectors[0], 4);
     return llvm::ConstantStruct::get(*mContext, &array, 1);
@@ -135,10 +135,10 @@ llvm::Constant*
 CgConst::ConvertStringArray(const IRStringArrayConst* array) const
 {
     // Construct array type and construct an undefined array value.
-    const llvm::Type* charTy = llvm::Type::getInt8Ty(*mContext);
-    const llvm::Type* stringTy = 
+    llvm::Type* charTy = llvm::Type::getInt8Ty(*mContext);
+    llvm::Type* stringTy = 
         llvm::PointerType::get(charTy, CgTypes::kDefaultAddressSpace);
-    const llvm::Type* arrayTy = 
+    llvm::Type* arrayTy = 
         llvm::ArrayType::get(stringTy, array->GetLength());
     llvm::Constant* arrayVal = llvm::UndefValue::get(arrayTy);
 

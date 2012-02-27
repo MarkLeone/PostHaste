@@ -62,7 +62,7 @@ public:
     llvm::Constant* GenRslFuncArray();
     llvm::Constant* GenRslFunction(llvm::Constant* function, 
                                    llvm::Constant* prototype,
-                                   const llvm::Type* rslFuncTy);
+                                   llvm::Type* rslFuncTy);
     llvm::Constant* GetGlobalInitializer(const char* name);
 
     IRStmt* Walk(IRStmt* stmt);

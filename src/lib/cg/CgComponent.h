@@ -46,7 +46,7 @@ public:
     CgVars* GetVars() const { return mVars; }
 
     /// Generate an "alloca" instruction with the specified type.
-    llvm::Value* GenAlloca(const llvm::Type* type,
+    llvm::Value* GenAlloca(llvm::Type* type,
                            const llvm::Twine& name) const;
 
     /// Get an integer constant (32-bit, signed).

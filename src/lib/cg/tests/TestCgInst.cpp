@@ -15,7 +15,7 @@ public:
     IRTypes mTypes;
     CgInst mInsts;
     CgBuilder* mBuilder;
-    const llvm::Type* mFloatTy;
+    llvm::Type* mFloatTy;
     IRLocalVar mVar1, mVar2;
 
     TestCgInst() :

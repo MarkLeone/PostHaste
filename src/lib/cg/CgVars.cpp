@@ -53,7 +53,7 @@ llvm::Value*
 CgVars::MakeAlloca(const IRVar* var) const
 {
     llvm::Twine name = llvm::Twine("_") + var->GetShortName();
-    const llvm::Type* ty = mTypes->Convert(var->GetType());
+    llvm::Type* ty = mTypes->Convert(var->GetType());
     return GenAlloca(ty, name);
 }
 

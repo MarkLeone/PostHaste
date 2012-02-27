@@ -49,9 +49,9 @@ void
 CgComponent::InitForTest()
 {
     // Create LLVM function type.
-    const llvm::Type* voidTy = llvm::Type::getVoidTy(*mContext);
-    std::vector<const llvm::Type*> noTypes;
-    const llvm::FunctionType* funcTy = 
+    llvm::Type* voidTy = llvm::Type::getVoidTy(*mContext);
+    std::vector<llvm::Type*> noTypes;
+    llvm::FunctionType* funcTy = 
         llvm::FunctionType::get(voidTy, noTypes, false);
 
     // Create function definition.
@@ -67,7 +67,7 @@ CgComponent::InitForTest()
 
 // Generate an "alloca" instruction with the specified type.
 llvm::Value*
-CgComponent::GenAlloca(const llvm::Type* type, const llvm::Twine& name) const
+CgComponent::GenAlloca(llvm::Type* type, const llvm::Twine& name) const
 {
     // Temporarily set the builder insertion point in the function
     // entry block.
@@ -91,6 +91,6 @@ CgComponent::GenAlloca(const llvm::Type* type, const llvm::Twine& name) const
 llvm::Constant* 
 CgComponent::GetInt(int i) const
 {
-    const llvm::Type* ty = llvm::Type::getInt32Ty(*mContext);
+    llvm::Type* ty = llvm::Type::getInt32Ty(*mContext);
     return llvm::ConstantInt::getSigned(ty, i);
 }

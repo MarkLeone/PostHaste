@@ -17,12 +17,12 @@ public:
     CgTypes(llvm::LLVMContext* contxt);
 
     /// Convert IR type to LLVM type.
-    const llvm::Type* Convert(const IRType* ty) const;
+    llvm::Type* Convert(const IRType* ty) const;
 
     /// Convert the type of a shader or shadeop parameter.  Input scalars
     /// (float, bools, strings, and shader objects) are passed by value, while
     /// other types and output parameters are passed by reference.
-    const llvm::Type* ConvertParamType(const IRType* type, bool isOutput) const;
+    llvm::Type* ConvertParamType(const IRType* type, bool isOutput) const;
 
     /// Check whether the specified IR type should be passed/returned by
     /// reference.  Only scalars are passed/returned by value (i.e. float,
@@ -31,18 +31,18 @@ public:
 
     /// Get the type of a vector of the specified length, which is a struct
     /// containing a float array (see OpVec3, OpVec4).
-    const llvm::Type* GetVecTy(unsigned int length) const;
+    llvm::Type* GetVecTy(unsigned int length) const;
 
     /// Get the type of a matrix, which is a struct containing an array of
     /// four 4-vectors (see OpMatrix4).
-    const llvm::Type* GetMatrixTy() const;
+    llvm::Type* GetMatrixTy() const;
 
     /// Our LLVM pointers all use a default address space.
     static const unsigned int kDefaultAddressSpace = 0;
 
 private:
     llvm::LLVMContext* mContext;
-    UtVector<const llvm::Type*> mBasicTypes;
+    UtVector<llvm::Type*> mBasicTypes;
 };
 
 #endif // ndef CG_TYPES_H
