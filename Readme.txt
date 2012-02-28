@@ -46,21 +46,10 @@ Prerequisites
 PostHaste builds under OSX and Linux.  There are no XCode or Visual Studio
 project files, but they would be straightforward to create.
 
-First, install LLVM.  A debug build is recommended.  For more information, see
-http://llvm.org/docs/GettingStarted.html
+First, install LLVM and Clang.  A debug build is recommended.  For more information, see:
 
-1. Download http://llvm.org/releases/2.6/llvm-2.6.tar.gz
-2. gunzip -c llvm-2.6.tar.gz | tar -vxf -
-3. cd llvm-2.6
-4. ./configure --enable-optimized=no
-5. make
-6. sudo make install
-
-Next, install llvm-gcc.  It's easiest to use prebuilt binaries:
-
-- OSX: http://llvm.org/releases/2.6/llvm-gcc-4.2-2.6-i386-darwin9.tar.gz 
-- Linux x86: http://llvm.org/releases/2.6/llvm-gcc-4.2-2.6-i686-linux.tar.gz
-- Linux x64: http://llvm.org/releases/2.6/llvm-gcc-4.2-2.6-x86_64-linux.tar.gz
+1. http://llvm.org/docs/GettingStarted.html
+2. http://clang.llvm.org/get_started.html
 
 Optionally, install the Google Test framework (for PostHaste unit tests):
 
@@ -72,8 +61,9 @@ Optionally, install the Google Test framework (for PostHaste unit tests):
 6. sudo make install
 
 The PostHaste Makefiles assume that LLVM and gtest are installed in standard
-system directories.  That can be changed by add appropriate include and
-library paths in build/Makefile.common.
+system directories.  Alternatively, the location of the LLVM install directory
+can be specified by setting an environment variable called "LLVM_DIR"
+(see build/Makefile.common).
 
 Building PostHaste
 ------------------
