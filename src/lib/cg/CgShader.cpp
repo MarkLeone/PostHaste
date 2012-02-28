@@ -23,20 +23,25 @@
 #include <llvm/DerivedTypes.h>
 #include <llvm/Function.h>
 #include <llvm/Linker.h>
+#include <llvm/LLVMContext.h>
 #include <llvm/Module.h>
 #include <llvm/Support/IRBuilder.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 #include <sstream>
 
 llvm::Module* 
-CgShaderCodegen(IRShader* shader, UtLog* log, int minPartitionSize, bool dumpIR)
+CgShaderCodegen(IRShader* shader, 
+                UtLog* log, 
+                llvm::LLVMContext* context,
+                int minPartitionSize, bool dumpIR)
 {
-    return CgShader(log, minPartitionSize, dumpIR).Codegen(shader);
+    return CgShader(log, context, minPartitionSize, dumpIR).Codegen(shader);
 }
 
 // Constructor. 
-CgShader::CgShader(UtLog* log, int minPartitionSize, bool dumpIR) :
-    CgComponent(CgComponent::Create(log)),
+CgShader::CgShader(UtLog* log, llvm::LLVMContext* context,
+                   int minPartitionSize, bool dumpIR) :
+    CgComponent(CgComponent::Create(log, context)),
     mCurrentFuncName(""),
     mMinPartitionSize(minPartitionSize),
     mDumpIR(dumpIR)
@@ -90,6 +95,10 @@ CgShader::Codegen(IRShader* shader)
     if (mLog->GetNumErrors() == 0) {
         llvm::Module* module = mModule;
         mModule = NULL;
+
+        // Verify the module
+        bool bad = llvm::verifyModule(*module);
+        assert(!bad && "Module verification failed");
         return module;
     }
     else {
@@ -565,10 +574,9 @@ CgShader::GenRslFuncTable()
     llvm::Constant* init = global->getInitializer();
     assert(init && "No initializer for RslPublicFunctions in plugin skeleton");
     llvm::ConstantStruct* initStruct = llvm::cast<llvm::ConstantStruct>(init);
-    assert(initStruct->getType()->getNumElements() == 4 &&
+    llvm::StructType* initStructTy = llvm::dyn_cast<llvm::StructType>(initStruct->getType());
+    assert(initStructTy->getNumElements() == 4 &&
            "Unexpected initializer for RslPublicFunctions");
-    assert(initStruct->getOperand(0)->getType() == funcArrayPtr->getType() &&
-           "RslFunction array type mismatch");
 
     // Construct a new struct constant containing a pointer to the RslFunction
     // array, along with the values from the original initializer (the version
@@ -581,15 +589,7 @@ CgShader::GenRslFuncTable()
 
     // Update the RslPublicFunctions initializer.
     // XXX does this cause the old initializer to leak?
-    llvm::Constant* newInit = llvm::ConstantStruct::getAnon(*mContext, elements);
-
-    // Sanity check the function table type.
-    llvm::Type* rslFuncTableTy =
-        mModule->getTypeByName("struct.RslFunctionTable");
-    if (rslFuncTableTy == NULL)
-        assert(false && "No RslFunctionTable type in plugin skeleton");
-    assert(newInit->getType() == rslFuncTableTy &&
-           "Unexpected type for RslFunctionTable struct");
+    llvm::Constant* newInit = llvm::ConstantStruct::get(initStructTy, elements);
     global->setInitializer(newInit);
 }
 
@@ -664,10 +664,7 @@ CgShader::GenRslFunction(llvm::Constant* function, llvm::Constant* prototype,
     elements[1] = function;
     elements[2] = voidFuncPtr;
     elements[3] = voidFuncPtr;
-
-    llvm::Constant* rslFunc = llvm::ConstantStruct::getAnon(*mContext, elements);
-    assert(rslFunc->getType() == rslFuncTy && "Type mismatch in GenRslFunc");
-    return rslFunc;
+    return llvm::ConstantStruct::get(llvm::dyn_cast<llvm::StructType>(rslFuncTy), elements);
 }
 
 // Get the initializer of the specified global variable.

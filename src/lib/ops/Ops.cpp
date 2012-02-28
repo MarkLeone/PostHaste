@@ -5,6 +5,7 @@
 #include "ops/OpTypes.h"
 #include <ri.h>                 // for RI_CURRNT, etc.
 #include <rx.h>
+#include <RslPlugin.h>          // for RslFunction
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
@@ -22,6 +23,10 @@
        convention of the generated LLVM code platform dependent.
 */
 
+// We need a dummy symbols that use RSL types to ensure that they appear
+// in the serialized bitcode.
+RslFunction* g_dummyRslFunction;
+RslFunctionTable* g_dummyRslFunctionTable;
 
 // ---------- Convenience functions ----------
 

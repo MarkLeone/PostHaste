@@ -6,6 +6,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <llvm/BasicBlock.h>
+#include <llvm/LLVMContext.h>
 #include <llvm/Module.h>
 #include <llvm/Support/IRBuilder.h>
 #include <llvm/Support/raw_ostream.h>
@@ -13,6 +14,7 @@
 class TestCgInst : public testing::Test { 
 public:
     UtLog mLog;
+    llvm::LLVMContext mContext;
     IRTypes mTypes;
     CgInst mInsts;
     CgBuilder* mBuilder;
@@ -21,7 +23,7 @@ public:
 
     TestCgInst() :
         mLog(stderr),
-        mInsts(CgComponent::Create(&mLog)),
+        mInsts(CgComponent::Create(&mLog, &mContext)),
         mBuilder(mInsts.GetBuilder()),
         mFloatTy(llvm::Type::getFloatTy(*mInsts.GetContext())),
         mVar1("x", mTypes.GetFloatTy(), kIRUniform, ""),

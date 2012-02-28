@@ -14,12 +14,13 @@
 class TestCgConst : public testing::Test {
 public:
     UtLog mLog;
+    llvm::LLVMContext mContext;
     CgConst mCodegen;
     IRTypes mTypes;
 
     TestCgConst() :
         mLog(stderr),
-        mCodegen(CgComponent::Create(&mLog))
+        mCodegen(CgComponent::Create(&mLog, &mContext))
     {
         mCodegen.InitForTest();
     }

@@ -7,6 +7,7 @@
 #include "util/UtLog.h"
 #include "xf/XfRaise.h"
 #include <llvm/Function.h>
+#include <llvm/LLVMContext.h>
 #include <llvm/Module.h>
 #include <llvm/Support/raw_ostream.h>
 #include <gtest/gtest.h>
@@ -16,12 +17,13 @@
 class TestCgShader : public testing::Test {
 public:
     UtLog mLog;
+    llvm::LLVMContext mContext;
     IRTypes mTypes;
     CgShader mCodegen;
 
     TestCgShader() :
         mLog(stderr),
-        mCodegen(&mLog)
+        mCodegen(&mLog, &mContext)
     {
     }
 
@@ -41,9 +43,10 @@ public:
     void TestShaderCodegen(const char* filename) {
         llvm::outs() << "---------- " << filename << " ----------\n";
         IRShader* shader = LoadShader(filename);
-        llvm::Module* module = CgShaderCodegen(shader, &mLog, 1, true);
+        llvm::LLVMContext context;
+        llvm::Module* module = CgShaderCodegen(shader, &mLog, &context, 1, true);
         ASSERT_TRUE(module != NULL);
-        // Eliminte unused functions and constants.
+        // Eliminate unused functions and constants.
         CgOptimize(module, 0);
         // Print non-static globals and functions.
         const llvm::Module::GlobalListType& globals =

@@ -13,6 +13,7 @@
 #include "xf/XfLower.h"
 #include "xf/XfRaise.h"
 #include <llvm/Bitcode/ReaderWriter.h>
+#include <llvm/LLVMContext.h>
 #include <llvm/Module.h>
 #include <llvm/Support/raw_os_ostream.h>
 #include <fcntl.h>                      // for O_RDW, O_CREAT
@@ -155,7 +156,8 @@ main(int argc, const char** argv)
     // Compile parts of shader to LLVM, updating IR with plugin calls.
     llvm::Module* module = NULL;
     if (!options.mInstrument) {
-        module = CgShaderCodegen(ir, &log, options.mMinPartitionSize, 
+        llvm::LLVMContext context;
+        module = CgShaderCodegen(ir, &log, &context, options.mMinPartitionSize, 
                                  options.mShowPartitions);
         status = (module == NULL);
         if (status > 0) {

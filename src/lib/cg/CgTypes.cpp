@@ -9,32 +9,32 @@
 #include <llvm/Type.h>
 #include <llvm/DerivedTypes.h>
 
-CgTypes::CgTypes(llvm::LLVMContext* context) :
-    mContext(context),
+CgTypes::CgTypes(const CgComponent& state) :
+    CgComponent(state),
     mBasicTypes(kIRNumTypeKinds, NULL)
 {
     // These types must agree with the shadeops in lib/ops/Ops.cpp.
-    llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
+    llvm::Type* floatTy = llvm::Type::getFloatTy(*GetContext());
     mBasicTypes[kIRFloatTy] = floatTy;
-    mBasicTypes[kIRBoolTy] = llvm::Type::getInt32Ty(*mContext);
-    mBasicTypes[kIRVoidTy] = llvm::Type::getVoidTy(*mContext);
+    mBasicTypes[kIRBoolTy] = llvm::Type::getInt32Ty(*GetContext());
+    mBasicTypes[kIRVoidTy] = llvm::Type::getVoidTy(*GetContext());
 
     // A triple is a struct containing a float[3] array.
-    llvm::Type* tripleTy = GetVecTy(3);
+    llvm::Type* tripleTy = GetClassType("OpVec3");
     mBasicTypes[kIRPointTy] = tripleTy;
     mBasicTypes[kIRVectorTy] = tripleTy;
     mBasicTypes[kIRNormalTy] = tripleTy;
     mBasicTypes[kIRColorTy] = tripleTy;
 
     // A matrix is a struct containing an array of four 4-vectors.
-    mBasicTypes[kIRMatrixTy] = GetMatrixTy();
+    mBasicTypes[kIRMatrixTy] = GetClassType("OpMatrix4");
 
     mBasicTypes[kIRStringTy] = 
-        llvm::PointerType::get(llvm::Type::getInt8Ty(*mContext), 
+        llvm::PointerType::get(llvm::Type::getInt8Ty(*GetContext()), 
                                kDefaultAddressSpace);
     mBasicTypes[kIRShaderTy] =
         // LLVM requires the use of i8* instead of void*.
-        llvm::PointerType::get(llvm::Type::getInt8Ty(*mContext),
+        llvm::PointerType::get(llvm::Type::getInt8Ty(*GetContext()),
                                kDefaultAddressSpace);
 }
 
@@ -42,11 +42,9 @@ CgTypes::CgTypes(llvm::LLVMContext* context) :
 // Get the type of a vector of the specified length, which is a struct
 // containing a float array (must agree with OpVec3, OpVec4).
 llvm::Type* 
-CgTypes::GetVecTy(unsigned int length) const
+CgTypes::GetVecTy() const
 {
-    llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
-    llvm::Type* arrayTy = llvm::ArrayType::get(floatTy, length);
-    return llvm::StructType::get(*mContext, llvm::ArrayRef<llvm::Type*>(&arrayTy, 1));
+    return mBasicTypes[kIRVectorTy];
 }
 
 // Get the type of a matrix, which is a struct containing an array of
@@ -54,9 +52,7 @@ CgTypes::GetVecTy(unsigned int length) const
 llvm::Type* 
 CgTypes::GetMatrixTy() const
 {
-    llvm::Type* vecTy = GetVecTy(4);
-    llvm::Type* arrayTy = llvm::ArrayType::get(vecTy, 4);
-    return llvm::StructType::get(*mContext, llvm::ArrayRef<llvm::Type*>(&arrayTy, 1));
+    return mBasicTypes[kIRMatrixTy];
 }
 
 
@@ -91,13 +87,13 @@ CgTypes::Convert(const IRType* ty) const
           std::vector<llvm::Type*> memberTypes(numMembers);
           for (unsigned int i = 0; i < numMembers; ++i)
               memberTypes[i] = Convert(structTy->GetMemberType(i));
-          return llvm::StructType::get(*mContext, llvm::ArrayRef<llvm::Type*>(memberTypes));
+          return llvm::StructType::get(*GetContext(), llvm::ArrayRef<llvm::Type*>(memberTypes));
       }
       case kIRNumTypeKinds:
           assert(false && "Invalid IR type");
     }
     assert(false && "Unimplemented kind of IR type");
-    return llvm::Type::getFloatTy(*mContext);
+    return llvm::Type::getFloatTy(*GetContext());
 }
 
 

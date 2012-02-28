@@ -13,12 +13,13 @@
 class TestCgValue : public testing::Test { 
 public:
     UtLog mLog;
+    llvm::LLVMContext mContext;
     CgValue mCodegen;
     IRTypes mTypes;
 
     TestCgValue() :
         mLog(stderr),
-        mCodegen(CgComponent::Create(&mLog))
+        mCodegen(CgComponent::Create(&mLog, &mContext))
     {
         mCodegen.InitForTest();
     }

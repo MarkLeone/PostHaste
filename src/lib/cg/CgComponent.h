@@ -21,7 +21,7 @@ class UtLog;
 class CgComponent {
 public:
     /// Create the the master state that shared by all codegen components.
-    static CgComponent Create(UtLog* log);
+    static CgComponent Create(UtLog* log, llvm::LLVMContext* context);
 
     /// Destroy the master state.
     void Destroy();
@@ -51,6 +51,11 @@ public:
 
     /// Get an integer constant (32-bit, signed).
     llvm::Constant* GetInt(int i) const;
+
+    /// Look up the specified class type in the current module.  The name should
+    /// include any namespace qualifiers, but it should not include a "struct."
+    /// or "class."  prefix.
+    llvm::Type* GetClassType(const char* name) const;
 
 protected:
     /// Message log

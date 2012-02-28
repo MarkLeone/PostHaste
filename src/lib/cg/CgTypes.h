@@ -5,16 +5,17 @@
 #ifndef CG_TYPES_H
 #define CG_TYPES_H
 
+#include "cg/CgComponent.h"
 #include "cg/CgFwd.h"
 #include "util/UtVector.h"
 class IRType;
 
 
 /// Code generation for IR types.
-class CgTypes {
+class CgTypes : public CgComponent {
 public:
     /// Constructor.
-    CgTypes(llvm::LLVMContext* contxt);
+    CgTypes(const CgComponent& state);
 
     /// Convert IR type to LLVM type.
     llvm::Type* Convert(const IRType* ty) const;
@@ -29,9 +30,9 @@ public:
     /// bool string, and ashader object).
     static bool IsPassByRef(const IRType* ty);
 
-    /// Get the type of a vector of the specified length, which is a struct
-    /// containing a float array (see OpVec3, OpVec4).
-    llvm::Type* GetVecTy(unsigned int length) const;
+    /// Get the type of a vector, which is a struct containing an array of three
+    /// floats (see OpVec3).
+    llvm::Type* GetVecTy() const;
 
     /// Get the type of a matrix, which is a struct containing an array of
     /// four 4-vectors (see OpMatrix4).
@@ -41,7 +42,6 @@ public:
     static const unsigned int kDefaultAddressSpace = 0;
 
 private:
-    llvm::LLVMContext* mContext;
     UtVector<llvm::Type*> mBasicTypes;
 };
 

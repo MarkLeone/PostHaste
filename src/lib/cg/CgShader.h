@@ -19,6 +19,7 @@ class UtLog;
 /// partitions with plugin calls.  An LLVM module for the shader plugin is
 /// returned, which has an entry point for each compiled partition.
 llvm::Module* CgShaderCodegen(IRShader* shader, UtLog* log, 
+                              llvm::LLVMContext* context,
                               int minPartitionSize=1,
                               bool dumpIR=false);
 
@@ -35,7 +36,8 @@ private:
     bool mDumpIR;
 
 public:
-    CgShader(UtLog* log, int minPartitionSize=1, bool dumpIR=false);
+    CgShader(UtLog* log, llvm::LLVMContext* context,
+             int minPartitionSize=1, bool dumpIR=false);
     ~CgShader();
 
     llvm::Module* Codegen(IRShader* shader);

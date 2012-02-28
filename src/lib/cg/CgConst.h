@@ -30,6 +30,9 @@ protected:
     /// Convert numeric constant data
     llvm::Constant* ConvertNumData(const float* data, const IRType* ty) const;
 
+    /// Make a float constant.
+    llvm::Constant* MakeFloat(float f) const;
+
     /// Make a float array constant.
     llvm::Constant* MakeFloatArray(const float* data,
                                    unsigned int length) const;

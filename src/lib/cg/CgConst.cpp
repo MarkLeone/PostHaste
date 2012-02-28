@@ -48,6 +48,14 @@ CgConst::ConvertNumData(const float* data, const IRType* ty) const
     return MakeMatrix(data);
 }
 
+/// Make a float constant.
+llvm::Constant*
+CgConst::MakeFloat(float f) const
+{
+    llvm::Type* floatTy = llvm::Type::getFloatTy(*mContext);
+    return llvm::ConstantFP::get(floatTy, f);
+}
+
 // Make a float array constant.
 llvm::Constant* 
 CgConst::MakeFloatArray(const float* data, unsigned int length) const
@@ -65,8 +73,13 @@ CgConst::MakeFloatArray(const float* data, unsigned int length) const
 llvm::Constant* 
 CgConst::MakeVector(const float* data, unsigned int length) const
 {
-    llvm::Constant* array = MakeFloatArray(data, length);
-    return llvm::ConstantStruct::getAnon(*mContext, llvm::ArrayRef<llvm::Constant*>(&array, 1));
+    std::vector<llvm::Constant*> members(3);
+    members[0] = MakeFloat(data[0]);
+    members[1] = MakeFloat(data[1]);
+    members[2] = MakeFloat(data[2]);
+    llvm::StructType* vecTy = llvm::dyn_cast<llvm::StructType>(mTypes->GetVecTy());
+    assert(vecTy != NULL && "Expected vector type to be an llvm::StructType");
+    return llvm::ConstantStruct::get(vecTy, llvm::ArrayRef<llvm::Constant*>(members));
 }
 
 // Make a matrix constant, which is a struct containing an array of 4-vectors.
@@ -74,15 +87,18 @@ CgConst::MakeVector(const float* data, unsigned int length) const
 llvm::Constant*
 CgConst::MakeMatrix(const float* data) const 
 {
-    std::vector<llvm::Constant*> vectors(4);
-    vectors[0] = MakeVector(data, 4);
-    vectors[1] = MakeVector(data+4, 4);
-    vectors[2] = MakeVector(data+8, 4);
-    vectors[3] = MakeVector(data+12, 4);
-    llvm::Type* vecTy = vectors[0]->getType();
-    llvm::ArrayType* arrayTy = llvm::ArrayType::get(vecTy, 4);
-    llvm::Constant* array = llvm::ConstantArray::get(arrayTy, vectors);
-    return llvm::ConstantStruct::getAnon(*mContext, llvm::ArrayRef<llvm::Constant*>(&array, 1));
+    std::vector<llvm::Constant*> rows(4);
+    for (int i = 0; i < 4; ++i) {
+        rows[i] = MakeFloatArray(data, 4);
+        data += 4;
+    }
+    llvm::Type* rowTy = rows[0]->getType();
+    llvm::ArrayType* arrayTy = llvm::ArrayType::get(rowTy, 4);
+    llvm::Constant* array = llvm::ConstantArray::get(arrayTy, rows);
+
+    llvm::StructType* matrixTy = llvm::dyn_cast<llvm::StructType>(mTypes->GetMatrixTy());
+    assert(matrixTy != NULL && "Expected matrix type to be an llvm::StructType");
+    return llvm::ConstantStruct::get(matrixTy, llvm::ArrayRef<llvm::Constant*>(&array, 1));
 }
 
 llvm::Constant* 

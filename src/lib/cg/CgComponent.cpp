@@ -16,16 +16,16 @@
 
 // Create the the master state that shared by all codegen components.
 CgComponent
-CgComponent::Create(UtLog* log)
+CgComponent::Create(UtLog* log, llvm::LLVMContext* context)
 {
     // We seem to get leaks when we use a new LLVMContext,
     // so for now we use the global one.
     CgComponent cg;
     cg.mLog = log;
-    cg.mContext = &llvm::getGlobalContext();
+    cg.mContext = context;
     cg.mModule = CgDeserializeShadeops(cg.mContext);
     cg.mBuilder = new CgBuilder(*cg.mContext);
-    cg.mTypes = new CgTypes(cg.mContext);
+    cg.mTypes = new CgTypes(cg);
     cg.mConsts = new CgConst(cg);
     cg.mVars = new CgVars(cg);
     cg.mValues = new CgValue(cg);
@@ -93,4 +93,18 @@ CgComponent::GetInt(int i) const
 {
     llvm::Type* ty = llvm::Type::getInt32Ty(*mContext);
     return llvm::ConstantInt::getSigned(ty, i);
+}
+
+// Look up the specified class type in the current module.  The name should include any namespace
+// qualifiers, but it should not include a "struct." or "class."  prefix.
+llvm::Type*
+CgComponent::GetClassType(const char* name) const
+{
+#ifdef USE_LLVM_GCC
+    llvm::Type* type = mModule->getTypeByName(std::string("struct.") + name);
+#else
+    llvm::Type* type = mModule->getTypeByName(std::string("class.") + name);
+#endif
+    assert(type && "Type not found in module");
+    return type;
 }
