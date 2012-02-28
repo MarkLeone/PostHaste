@@ -8,6 +8,7 @@
 #include "xf/XfRaise.h"
 #include <llvm/Function.h>
 #include <llvm/Module.h>
+#include <llvm/Support/raw_ostream.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <stdio.h>
@@ -38,7 +39,7 @@ public:
     }
 
     void TestShaderCodegen(const char* filename) {
-        std::cout << "---------- " << filename << " ----------\n";
+        llvm::outs() << "---------- " << filename << " ----------\n";
         IRShader* shader = LoadShader(filename);
         llvm::Module* module = CgShaderCodegen(shader, &mLog, 1, true);
         ASSERT_TRUE(module != NULL);
@@ -50,14 +51,14 @@ public:
         llvm::Module::GlobalListType::const_iterator global;
         for (global = globals.begin(); global != globals.end(); ++global) {
             if (!global->hasInternalLinkage())
-                std::cout << *global;
+                llvm::outs() << *global;
         }
         const llvm::Module::FunctionListType& funcs =
             module->getFunctionList();
         llvm::Module::FunctionListType::const_iterator func;
         for (func = funcs.begin(); func != funcs.end(); ++func) {
             if (!func->hasInternalLinkage())
-                std::cout << *func;
+                llvm::outs() << *func;
         }
     }
 };
@@ -73,7 +74,7 @@ TEST_F(TestCgShader, TestGenPrototype1)
                         kIRUniform, "", false, new IRSeq());
     IRVars vars(5, &x1, &x2, &x3, &P, &param);
     std::string proto = mCodegen.GenPrototype("func", vars);
-    std::cout << "TestGenPrototype1:\n" <<  proto << std::endl;
+    llvm::outs() << "TestGenPrototype1:\n" <<  proto << "\n";
 }
 
 TEST_F(TestCgShader, TestGenPrototype2)
@@ -85,8 +86,8 @@ TEST_F(TestCgShader, TestGenPrototype2)
                 shader->GetParams().begin(), shader->GetParams().end());
     vars.insert(vars.end(),
                 shader->GetGlobals().begin(), shader->GetGlobals().end());
-    std::cout << "TestGenPrototype2:\n"
-              << mCodegen.GenPrototype("func", vars) << std::endl;
+    llvm::outs() << "TestGenPrototype2:\n"
+              << mCodegen.GenPrototype("func", vars) << "\n";
 }
 
 TEST_F(TestCgShader, TestGenKernelFunc)
@@ -99,7 +100,7 @@ TEST_F(TestCgShader, TestGenKernelFunc)
     vars.insert(vars.end(),
                 shader->GetGlobals().begin(), shader->GetGlobals().end());
     llvm::Function* function = mCodegen.GenKernelFunc("func", vars);
-    std::cout << "TestGenKernelFunc:\n" << *function;
+    llvm::outs() << "TestGenKernelFunc:\n" << *function;
 }
 
 TEST_F(TestCgShader, TestGenPluginCall)
@@ -127,7 +128,7 @@ TEST_F(TestCgShader, TestCodegenPartition)
     ASSERT_TRUE(shader->GetBody()->CanCompile());
     shader->SetBody( mCodegen.CodegenPartition(shader->GetBody()));
     std::cout << "TestCodegenParition:\n" << *shader->GetBody();
-    std::cout << *mCodegen.GetModule()->getFunction("TestCgShader1");
+    llvm::outs() << *mCodegen.GetModule()->getFunction("TestCgShader1");
     delete shader;
 }
 

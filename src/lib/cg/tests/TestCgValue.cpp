@@ -8,6 +8,7 @@
 #include <llvm/Constants.h>
 #include <llvm/LLVMContext.h>
 #include <llvm/Module.h>
+#include <llvm/Support/raw_ostream.h>
 
 class TestCgValue : public testing::Test { 
 public:
@@ -32,7 +33,7 @@ TEST_F(TestCgValue, TestFloatConst)
 {
     IRNumConst v(1.0f);
     llvm::Value* arg = mCodegen.ConvertArg(&v);
-    std::cout << *arg << std::endl;
+    llvm::outs() << *arg << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantFP>(arg));
 }
 
@@ -42,7 +43,7 @@ TEST_F(TestCgValue, TestTripleConst)
     IRNumConst v(data, mTypes.GetPointTy());
 
     llvm::Value* arg = mCodegen.ConvertArg(&v);
-    std::cout << *arg << std::endl;
+    llvm::outs() << *arg << "\n";
 }
 
 TEST_F(TestCgValue, TestArrayConst)
@@ -52,7 +53,7 @@ TEST_F(TestCgValue, TestArrayConst)
     IRNumArrayConst v(elements, ty);
 
     llvm::Value* arg = mCodegen.ConvertArg(&v);
-    std::cout << *arg << std::endl;
+    llvm::outs() << *arg << "\n";
 }
 
 TEST_F(TestCgValue, TestTripleArrayConst)
@@ -62,7 +63,7 @@ TEST_F(TestCgValue, TestTripleArrayConst)
     IRNumArrayConst v(elements, ty);
 
     llvm::Value* arg = mCodegen.ConvertArg(&v);
-    std::cout << *arg << std::endl;
+    llvm::outs() << *arg << "\n";
 }
 
 TEST_F(TestCgValue, TestStringConst)
@@ -70,7 +71,7 @@ TEST_F(TestCgValue, TestStringConst)
     IRStringConst v("hello");
 
     llvm::Value* arg = mCodegen.ConvertArg(&v);
-    std::cout << *arg << std::endl;
+    llvm::outs() << *arg << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantExpr>(arg));
 }
 
@@ -84,7 +85,7 @@ TEST_F(TestCgValue, TestStringArrayConst)
     IRStringArrayConst v(&elements[0], ty);
 
     llvm::Value* arg = mCodegen.ConvertArg(&v);
-    std::cout << *arg << std::endl;
+    llvm::outs() << *arg << "\n";
 }
 
 int main(int argc, char **argv) 

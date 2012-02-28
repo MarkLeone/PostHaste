@@ -8,6 +8,8 @@
 ALSO_MAKE ?=
 OTHER_SRCS ?=
 CLEANUP ?=
+LDFLAGS ?=
+TEST_PLATFORM ?=
 OBJ_DIR = $(GEN_DIR)/$(SRC_DIR)
 TEST_OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(TEST_SRCS))
 OTHER_OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(OTHER_SRCS))
@@ -15,8 +17,8 @@ TEST_PROGS = $(patsubst %.cpp,$(OBJ_DIR)/%$(DOT_EXE),$(TEST_SRCS))
 TEST_OUTPUTS = $(patsubst %.cpp,$(OBJ_DIR)/%.txt,$(TEST_SRCS))
 LIBS := $(patsubst %,$(GEN_DIR)/lib/%,$(LIBS))
 
-CXXFLAGS += -Wno-unused-variable
-SYS_LIBS += -lgtest
+CXXFLAGS += -Wno-unused-variable -I$(GTEST)/include
+SYS_LIBS += -L$(GTEST)/lib -lgtest
 
 all: $(ALSO_MAKE) $(TEST_OUTPUTS:%=%.ok) 
 	@rm -f $(CLEANUP)
@@ -36,7 +38,7 @@ $(TEST_PROGS): %: %.o $(OTHER_OBJECTS) $(LIBS)
 	$(CXX) -o $@ $(LDFLAGS) $< $(LIBS) $(SYS_LIBS)
 
 $(TEST_OUTPUTS): %.txt: %$(DOT_EXE)
-	$< > $@
+	$< --gtest_print_time=0 > $@
 
 %.ok: %
 	diff $< baselines/$(TEST_PLATFORM)/$(notdir $<)

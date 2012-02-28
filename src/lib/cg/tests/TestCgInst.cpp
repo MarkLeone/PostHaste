@@ -8,6 +8,7 @@
 #include <llvm/BasicBlock.h>
 #include <llvm/Module.h>
 #include <llvm/Support/IRBuilder.h>
+#include <llvm/Support/raw_ostream.h>
 
 class TestCgInst : public testing::Test { 
 public:
@@ -39,7 +40,7 @@ TEST_F(TestCgInst, TestGenInst)
     IRBasicInst inst(kOpcode_Negate, &mVar1, args);
 
     mInsts.GenInst(inst);
-    std::cout << *mBuilder->GetInsertBlock() << std::endl;
+    llvm::outs() << *mBuilder->GetInsertBlock() << "\n";
 }
 
 TEST_F(TestCgInst, TestGenAssign)
@@ -49,7 +50,7 @@ TEST_F(TestCgInst, TestGenAssign)
     IRBasicInst inst(kOpcode_Assign, &mVar1, args);
 
     mInsts.GenInst(inst);
-    std::cout << *mBuilder->GetInsertBlock() << std::endl;
+    llvm::outs() << *mBuilder->GetInsertBlock() << "\n";
     
 }
 

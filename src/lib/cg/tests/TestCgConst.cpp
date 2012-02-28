@@ -6,8 +6,10 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <llvm/Constants.h>
+#include <llvm/DerivedTypes.h>
 #include <llvm/LLVMContext.h>
 #include <llvm/Module.h>
+#include <llvm/Support/raw_ostream.h>
 
 class TestCgConst : public testing::Test {
 public:
@@ -31,7 +33,7 @@ TEST_F(TestCgConst, TestFloatConst)
 {
     IRNumConst v(1.0f);
     llvm::Constant* c = mCodegen.Convert(&v);
-    std::cout << *c << std::endl;
+    llvm::outs() << *c << "\n";
 
     const llvm::ConstantFP* f = llvm::dyn_cast<llvm::ConstantFP>(c);
     ASSERT_TRUE(f != NULL);
@@ -44,7 +46,7 @@ TEST_F(TestCgConst, TestTripleConst)
     IRNumConst v(data, mTypes.GetPointTy());
 
     llvm::Constant* c = mCodegen.Convert(&v);
-    std::cout << *c << std::endl;
+    llvm::outs() << *c << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantStruct>(c));
 }
 
@@ -55,7 +57,7 @@ TEST_F(TestCgConst, TestArrayConst)
     IRNumArrayConst v(elements, ty);
 
     llvm::Constant* c = mCodegen.Convert(&v);
-    std::cout << *c << std::endl;
+    llvm::outs() << *c << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantArray>(c));
 }
 
@@ -66,7 +68,7 @@ TEST_F(TestCgConst, TestTripleArrayConst)
     IRNumArrayConst v(elements, ty);
 
     llvm::Constant* c = mCodegen.Convert(&v);
-    std::cout << *c << std::endl;
+    llvm::outs() << *c << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantArray>(c));
 }
 
@@ -75,7 +77,7 @@ TEST_F(TestCgConst, TestStringConst)
     IRStringConst v("hello");
 
     llvm::Constant* c = mCodegen.Convert(&v);
-    std::cout << *c << std::endl;
+    llvm::outs() << *c << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantExpr>(c));
 }
 
@@ -89,7 +91,7 @@ TEST_F(TestCgConst, TestStringArrayConst)
     IRStringArrayConst v(&elements[0], ty);
 
     llvm::Constant* c = mCodegen.Convert(&v);
-    std::cout << *c << std::endl;
+    llvm::outs() << *c << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantArray>(c));
 }
 
@@ -99,8 +101,8 @@ TEST_F(TestCgConst, TestMatrixConst)
     IRNumConst v(data, mTypes.GetMatrixTy());
 
     llvm::Constant* c = mCodegen.Convert(&v);
-    // std::cout << *c << std::endl;
-    std::cout << *c->getType() << std::endl;
+    // llvm::outs() << *c << "\n";
+    llvm::outs() << *c->getType() << "\n";
     EXPECT_TRUE(llvm::isa<llvm::ConstantStruct>(c));
 }
 
